@@ -4,7 +4,7 @@ return [
     /*
      * The destination path for the javascript file.
      */
-    'path' => 'resources/js/globals',
+    'path' => 'resources/js/plugins',
 
     /*
      * The destination filename for the javascript file.

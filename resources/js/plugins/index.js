@@ -3,8 +3,10 @@ import Laroute from './laroute';
 import axios from 'axios';
 import Toasted from 'vue-toasted';
 import moment from 'moment-timezone';
+import Form from './form';
 
 window.moment = moment;
+window.Form = Form;
 
 Vue.prototype.$route = Laroute.route;
 Vue.prototype.$axios = axios;

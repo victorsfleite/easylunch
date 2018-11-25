@@ -1,5 +1,5 @@
 <template lang="pug">
-    .card.border-0.shadow-sm
+    .card
         .card-header.bg-white(style="padding: 0.75rem")
             .d-flex.align-items-center
                 div
@@ -90,9 +90,9 @@
                         td.align-middle
                             .actions
                                 slot(:row="resource", name="actions")
-                                    a.btn.btn-sm.bg-transparent(v-if="detailUrl", :href="detailUrl")
+                                    a.btn.btn-sm.bg-transparent(:href="resourceUrl(resource)")
                                         i.far.fa-eye.text-black-50
-                                    a.btn.btn-sm.bg-transparent(v-if="editUrl", :href="editUrl")
+                                    a.btn.btn-sm.bg-transparent(:href="editUrl(resource)")
                                         i.far.fa-edit.text-black-50
                                 button.btn.btn-sm.bg-transparent(
                                     @click="confirmRemove(resource)",
@@ -206,20 +206,6 @@ export default {
         },
 
         /**
-         * Url for the detail button
-         */
-        detailUrl: {
-            default: null,
-        },
-
-        /**
-         * URL for the edit page.
-         */
-        editUrl: {
-            default: null,
-        },
-
-        /**
          * Base Resource's URL
          */
         url: {
@@ -324,6 +310,10 @@ export default {
         _actions() {
             return this.hasActions ? this.options.actions : [];
         },
+        // editUrl() {
+        //     // return this.resourceUrl()
+        //     // return this.url +
+        // },
     },
 
     created() {
@@ -456,7 +446,6 @@ export default {
             this.loading = true;
             const search = this.search || null;
             const sort = this.sort;
-            this.page = search ? page : 1;
             const filter = this.getPreparedFilters();
             const { data: resources } = await this.$axios.get(this.url, { params: { page, search, sort, filter } });
             this.loading = false;
@@ -526,6 +515,10 @@ export default {
 
         resourceUrl(resource) {
             return `${this.url}/${resource[this.trackBy]}`;
+        },
+
+        editUrl(resource) {
+            return this.resourceUrl(resource) + '/edit';
         },
 
         async restore(resource) {

@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\DummyClassBulkDestroyRequest;
+use App\Http\Requests\DummyClassRequest;
+use App\Http\Resources\DataResource;
+use App\Models\DummyClass;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Spatie\QueryBuilder\QueryBuilder;
+
+class DummyClassController extends Controller
+{
+    public function list(Request $request)
+    {
+        return view('dummy-url.index', compact('request'));
+    }
+
+    public function index(Request $request)
+    {
+        return DataResource::collection(
+            QueryBuilder::for(DummyClass::class)->search($request->search)->paginate()
+        );
+    }
+
+    public function create()
+    {
+        return view('dummy-url.create');
+    }
+
+    public function edit(DummyClass $dummyVariable)
+    {
+        return view('dummy-url.edit', compact('dummyVariable'));
+    }
+
+    public function store(DummyClassRequest $request)
+    {
+        return DataResource::make(DummyClass::create($request->validated()));
+    }
+
+    public function show(DummyClass $dummyVariable)
+    {
+        return DataResource::make($dummyVariable);
+    }
+
+    public function update(DummyClassRequest $request, DummyClass $dummyVariable)
+    {
+        $dummyVariable->update($request->validated());
+
+        return DataResource::make($dummyVariable);
+    }
+
+    public function destroy(DummyClass $dummyVariable)
+    {
+        $dummyVariable->delete();
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function bulkDestroy(DummyClassBulkDestroyRequest $request)
+    {
+        DummyClass::destroy($request->ids);
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
+}

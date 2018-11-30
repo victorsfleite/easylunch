@@ -1,5 +1,5 @@
 <template lang="pug">
-    .card
+    .card.resource-table
         .card-header.bg-white(style="padding: 0.75rem")
             .d-flex.align-items-center
                 div
@@ -44,10 +44,11 @@
                                     :class="{active: isAppliedFilter(filter)}") {{ filter.label }}
 
                     //- BULK DELETE OPTION
-                    button-dropdown.ml-2(v-if="selected.length && hasBulkDelete",
-                        button-classes="btn-sm btn-default",
+                    button-dropdown.ml-2(
+                        :class="{'action-invisible': !selected.length || !hasBulkDelete}"
+                        button-classes="btn-sm btn-grey",
                         dropdown-classes="dropdown-menu-right")
-                        i.fa.fa-trash-alt.text-black-50
+                        i.far.fa-trash-alt.text-black-50
                         div(slot="items")
                             a.dropdown-item(href="#", @click.prevent="confirmBulkDelete") Delete All ({{ selected.length }})
 
@@ -80,11 +81,17 @@
                                     span.text-hide Checkbox
                         td.align-middle(v-for="column of columns", :key="column")
                             slot(:row="resource", :name="column")
-                                span(v-if="!isAvatar(column)") {{ objGet(resource, column) }}
+                                span(v-if="!isAvatar(column) && !isImage(column)") {{ objGet(resource, column) }}
                                 img.avatar.rounded-circle(
                                     v-if="isAvatar(column)"
                                     :class="{ \
                                         [options.avatars[column] ? options.avatars[column]['cssClass'] || '' : '']: true \
+                                    }"
+                                    :src="objGet(resource, column)")
+                                img(
+                                    v-if="isImage(column)"
+                                    :class="{ \
+                                        [options.images[column] ? options.images[column]['cssClass'] || '' : 'resource-image']: true \
                                     }"
                                     :src="objGet(resource, column)")
                         td.align-middle
@@ -138,33 +145,42 @@
 </template>
 
 <style lang="sass">
-.is-sortable
-    user-select: none
+.resource-table
+    .action-invisible
+        visibility: hidden
+    .is-sortable
+        user-select: none
 
-    span
-        cursor: pointer
+        span
+            cursor: pointer
 
-    .indicators
-        font-size: .65rem
-        i.fa
-            opacity: 0.4
-            &.active
-                opacity: 1
-                color: red
+        .indicators
+            font-size: .65rem
+            i.fa
+                opacity: 0.4
+                &.active
+                    opacity: 1
+                    color: red
 
-.modal.zoomin
-    transform: scale(1.2)
-    opacity: 0
-    transition: all .2s ease
-    &.show
-        transform: scale(1)
-        opacity: 1
+    .modal.zoomin
+        transform: scale(1.2)
+        opacity: 0
         transition: all .2s ease
+        &.show
+            transform: scale(1)
+            opacity: 1
+            transition: all .2s ease
 
-.table
-    .actions
-        i
-            font-size: 1rem
+    .table
+        .actions
+            i
+                font-size: 1rem
+        .btn-grey
+            background-color: #e6eaec
+
+        .resource-image
+            max-width: 80px
+            border-radius: 4px
 </style>
 
 
@@ -438,6 +454,14 @@ export default {
                 : Object.keys(this.options.avatars).includes(column);
         },
 
+        isImage(column) {
+            if (!this.hasOption('images')) return false;
+
+            return Array.isArray(this.options.images)
+                ? this.options.images.includes(column)
+                : Object.keys(this.options.images).includes(column);
+        },
+
         isRemoving(resource) {
             return resource && this.removing.includes(resource[this.trackBy]);
         },
@@ -547,9 +571,7 @@ export default {
         },
 
         unselectAll() {
-            this.ids
-                .filter(id => this.selected.includes(id))
-                .forEach(id => this.selected.splice(this.selected.indexOf(id), 1));
+            this.ids.filter(id => this.selected.includes(id)).forEach(id => this.selected.splice(this.selected.indexOf(id), 1));
         },
 
         clearSelection() {

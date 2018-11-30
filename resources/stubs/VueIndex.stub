@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-md-4">
-                <input-text v-model="search" left-icon="fa fa-search"></input-text>
+                <input-text v-model="search" left-icon="fa fa-search" input-class="border-0 shadow-sm"></input-text>
             </div>
 
             <div class="col-md-4 ml-auto d-flex mb-3">
@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <resource-table
+        <resource-table class="border-0 shadow-sm"
             url="/dummy-url"
             :columns="columns"
             :search="search"

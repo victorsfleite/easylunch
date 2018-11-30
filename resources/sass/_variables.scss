@@ -18,14 +18,20 @@ $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
+$grey: #e6eaec;
 
 $primary: $blue;
 $danger: $red;
 $success: $green;
 $info: $cyan;
 
+$border-radius: 0.4rem !default;
+$border-radius-lg: 0.5rem !default;
+$border-radius-sm: 0.25rem !default;
+$custom-checkbox-indicator-border-radius: $border-radius-sm !default;
 
 $theme-colors: (
     'default': whitesmoke,
+    'grey': $grey,
     'whatsapp': #4be677,
 );

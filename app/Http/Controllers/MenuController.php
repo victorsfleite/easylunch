@@ -36,17 +36,23 @@ class MenuController extends Controller
 
     public function store(MenuRequest $request)
     {
-        return DataResource::make(Menu::create($request->validated()));
+        $menu = Menu::create($request->validated());
+
+        $this->addMediaIfExists($menu, 'new_image', 'image');
+
+        return DataResource::make($menu);
     }
 
     public function show(Menu $menu)
     {
-        return DataResource::make($menu);
+        return view('menus.show', compact('menu'));
     }
 
     public function update(MenuRequest $request, Menu $menu)
     {
         $menu->update($request->validated());
+
+        $this->addMediaIfExists($menu, 'new_image', 'image');
 
         return DataResource::make($menu);
     }

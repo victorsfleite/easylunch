@@ -11,8 +11,14 @@
                     button-loading.btn.btn-primary(@click='create', v-if='!form.id', :loading='form.submitting')
                         | Create
         div
+            select-file.d-flex.justify-content-center(
+                @change="form.new_image = $event"
+                :image="form.image && form.image.original"
+                accept="image/*",
+                width="200px",
+                icon="fa fa-3x fa-camera") Image
             input-text(type="date", :form="form", field="date", label="Date", v-model="form.date")
-            input-textarea(:form="form", field="description", label="Description", v-model="form.description")
+            input-texteditor(:form="form", field="description", label="Description", v-model="form.description")
 </template>
 
 <script>

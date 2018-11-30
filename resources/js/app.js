@@ -23,7 +23,12 @@ const app = new Vue({
     created() {
         this.$axios.interceptors.response.use(response => response, error => {
             if (error.response && error.response.status === 403) {
-                this.$toasted.error('Você não tem permissão para executar esta operação');
+                if (error.response.status === 403) {
+                    this.$toasted.error('Você não tem permissão para executar esta operação');
+                }
+                if (error.response.status === 400) {
+                    this.$toasted.error('Você não pode executar esta operação');
+                }
             }
 
             return Promise.reject(error);

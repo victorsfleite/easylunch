@@ -63,6 +63,8 @@ class MenuController extends Controller
 
     public function destroy(Menu $menu)
     {
+        abort_if($menu->orders()->completed()->count(), Response::HTTP_BAD_REQUEST);
+
         $menu->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);

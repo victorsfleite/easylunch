@@ -20,7 +20,7 @@ class MenuController extends Controller
     public function index(Request $request)
     {
         return DataResource::collection(
-            QueryBuilder::for(Menu::class)->search($request->search)->paginate()
+            QueryBuilder::for(Menu::class)->with('orders')->search($request->search)->paginate()
         );
     }
 
@@ -43,9 +43,13 @@ class MenuController extends Controller
         return DataResource::make($menu);
     }
 
-    public function show(Menu $menu)
+    public function show(Request $request, Menu $menu)
     {
-        return view('menus.show', compact('menu'));
+        $menu->load('orders');
+
+        return $request->ajax()
+            ? DataResource::make($menu)
+            : view('menus.show', compact('menu'));
     }
 
     public function update(MenuRequest $request, Menu $menu)

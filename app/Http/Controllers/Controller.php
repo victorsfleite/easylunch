@@ -12,6 +12,11 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public function currentUser()
+    {
+        return auth()->user();
+    }
+
     protected function addMediaIfExists(HasMedia $model, $field, $collection = 'default')
     {
         if (request()->has($field)) {

@@ -1,5 +1,5 @@
 <template lang="pug">
-    .card
+    .card.resource-table
         .card-header.bg-white(style="padding: 0.75rem")
             .d-flex.align-items-center
                 div
@@ -44,7 +44,8 @@
                                     :class="{active: isAppliedFilter(filter)}") {{ filter.label }}
 
                     //- BULK DELETE OPTION
-                    button-dropdown.ml-2(v-if="selected.length && hasBulkDelete",
+                    button-dropdown.ml-2(
+                        :class="{'action-invisible': !selected.length || !hasBulkDelete}"
                         button-classes="btn-sm btn-grey",
                         dropdown-classes="dropdown-menu-right")
                         i.far.fa-trash-alt.text-black-50
@@ -144,39 +145,42 @@
 </template>
 
 <style lang="sass">
-.is-sortable
-    user-select: none
+.resource-table
+    .action-invisible
+        visibility: hidden
+    .is-sortable
+        user-select: none
 
-    span
-        cursor: pointer
+        span
+            cursor: pointer
 
-    .indicators
-        font-size: .65rem
-        i.fa
-            opacity: 0.4
-            &.active
-                opacity: 1
-                color: red
+        .indicators
+            font-size: .65rem
+            i.fa
+                opacity: 0.4
+                &.active
+                    opacity: 1
+                    color: red
 
-.modal.zoomin
-    transform: scale(1.2)
-    opacity: 0
-    transition: all .2s ease
-    &.show
-        transform: scale(1)
-        opacity: 1
+    .modal.zoomin
+        transform: scale(1.2)
+        opacity: 0
         transition: all .2s ease
+        &.show
+            transform: scale(1)
+            opacity: 1
+            transition: all .2s ease
 
-.table
-    .actions
-        i
-            font-size: 1rem
-    .btn-grey
-        background-color: #e6eaec
+    .table
+        .actions
+            i
+                font-size: 1rem
+        .btn-grey
+            background-color: #e6eaec
 
-    .resource-image
-        max-width: 80px
-        border-radius: 4px
+        .resource-image
+            max-width: 80px
+            border-radius: 4px
 </style>
 
 

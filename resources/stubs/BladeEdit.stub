@@ -1,0 +1,7 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <dummy-component :resource="{{ json_encode($dummyVariable) }}"></dummy-component>
+</div>
+@endsection

@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div ref="container" @click="selectFile" class="select-file rounded-circle text-white cursor-pointer d-flex flex-column align-items-center justify-content-center"
+        <div ref="container" @click="selectFile" class="select-file text-white cursor-pointer d-flex flex-column align-items-center justify-content-center"
             :title="title"
             data-toggle="tooltip"
             data-placement="top"
             :style="{ width, height: width, background }"
-            :class="{ 'bg-success': file, 'bg-gray': !file, 'has-errors': error }">
+            :class="{ 'bg-success': file && !isImage, 'has-errors': error, rounded, 'rounded-circle': circled }">
 
             <slot name="icon" v-if="!isImage">
                 <i :class="fileIcon"></i>
@@ -21,12 +21,20 @@
     </div>
 </template>
 
+<style lang="scss">
+.select-file {
+    background-color: grey;
+}
+</style>
+
+
 <style lang="scss" scoped>
 @import '~styles/variables';
 
 .select-file {
     position: relative;
     border: 1px solid transparent;
+    overflow: hidden;
 
     &.has-errors {
         border: 1px solid $danger;
@@ -39,6 +47,10 @@
         right: 0;
         opacity: 0;
         transition: opacity 0.1s ease;
+        background: white;
+        border: 1px solid white;
+        border-radius: 30px;
+        width: 19px;
     }
 
     &:hover {
@@ -47,6 +59,7 @@
 
             &:hover {
                 opacity: 1;
+                cursor: pointer;
             }
         }
     }
@@ -62,6 +75,8 @@ export default {
         media: { default: null },
         accept: { default: '*' },
         icon: { default: 'fa fa-3x fa-file' },
+        rounded: { default: true },
+        circled: { default: false },
         iconMap: {
             default: () => ({
                 pdf: 'fa fa-3x fa-file-pdf',

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -20,7 +19,7 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($password)
     {
-        if ($password !== null & $password !== "") {
+        if ($password && !is_bool($password)) {
             $this->attributes['password'] = bcrypt($password);
         }
     }

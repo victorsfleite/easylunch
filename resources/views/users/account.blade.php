@@ -6,13 +6,13 @@
         <div class="col-md-3">
             <div class="card card-default card-flush">
                 <div class="card-header">
-                    Your Settings
+                    Configurações
                 </div>
 
                 <div role="tablist" class="nav flex-column nav-tabs inner-nav stacked">
                     <a data-toggle="tab" aria-controls="account" href="#account" role="tab" class="nav-link active show" aria-selected="true">
                         <i class="fas fa-fw fa-cogs"></i>
-                        Account
+                        Minha Conta
                     </a>
                 </div>
             </div>

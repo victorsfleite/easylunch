@@ -1,27 +1,27 @@
 <template>
     <div class="card mb-4 card-default">
         <div class="card-header">
-            Change Password
+            Alterar Senha
         </div>
 
         <div class="card-body">
             <div role="form">
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-md-right"> Current Password </label>
+                    <label class="col-md-3 col-form-label text-md-right"> Senha Atual </label>
                     <div class="col-md-6">
                         <input-text class="mb-0" v-model="passwordForm.current_password" :form="passwordForm" field="current_password" type="password" />
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-md-right"> New Password </label>
+                    <label class="col-md-3 col-form-label text-md-right"> Nova Senha </label>
                     <div class="col-md-6">
                         <input-text class="mb-0" v-model="passwordForm.password" :form="passwordForm" field="password" type="password" />
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-md-right"> Confirm Password </label>
+                    <label class="col-md-3 col-form-label text-md-right"> Confirmar Senha </label>
                     <div class="col-md-6">
                         <input-text class="mb-0" v-model="passwordForm.password_confirmation" :form="passwordForm" field="password_confirmation" type="password" />
                     </div>
@@ -31,7 +31,7 @@
                     <div class="offset-md-3 col-md-6">
                         <button-loading class="btn btn-primary" @click="updatePassword" :loading="passwordForm.submitting">
                             <i class="far fa-save with-text mr-1"></i>
-                            Update Password
+                            Atualizar Senha
                         </button-loading>
                     </div>
                 </div>
@@ -59,7 +59,7 @@ export default {
             );
 
             this.passwordForm.reset();
-            this.$toasted.success('Password successfully updated!');
+            this.$toasted.success('Senha alterada com sucesso!');
         },
     },
 };

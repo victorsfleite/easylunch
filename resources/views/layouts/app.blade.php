@@ -57,7 +57,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('users.account') }}">
                                         <i class="fas fa-user mr-1"></i>
-                                        {{ __('Account') }}
+                                        {{ __('Minha Conta') }}
                                     </a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"

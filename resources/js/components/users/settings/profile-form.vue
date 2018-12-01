@@ -1,20 +1,20 @@
 <template>
     <div class="card mb-4 card-default">
         <div class="card-header">
-            Profile
+            Perfil
         </div>
 
         <div class="card-body">
             <div role="form">
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-md-right"> Name </label>
+                    <label class="col-md-3 col-form-label text-md-right"> Nome </label>
                     <div class="col-md-6">
                         <input-text class="mb-0" v-model="profileForm.name" :form="profileForm" field="name" />
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label text-md-right"> E-mail Address </label>
+                    <label class="col-md-3 col-form-label text-md-right"> E-mail </label>
                     <div class="col-md-6">
                         <input-text class="mb-0" v-model="profileForm.email" :form="profileForm" field="email" />
                     </div>
@@ -24,7 +24,7 @@
                     <div class="offset-md-3 col-md-6">
                         <button-loading class="btn btn-primary" @click="updateProfile" :loading="profileForm.submitting">
                             <i class="far fa-save with-text mr-1"></i>
-                            Save
+                            Salvar
                         </button-loading>
                     </div>
                 </div>
@@ -52,7 +52,7 @@ export default {
             );
 
             this.profileForm = new Form(updated);
-            this.$toasted.success('Profile successfully updated!');
+            this.$toasted.success('Perfil atualizado com sucesso!');
         },
     },
 };

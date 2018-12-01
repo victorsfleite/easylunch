@@ -9,7 +9,7 @@ class UserPasswordUpdateController extends Controller
 {
     public function __invoke(UserPasswordUpdateRequest $request, User $user)
     {
-        $user->update($request->all('password'));
+        $user->update($request->validated());
 
         return $user;
     }

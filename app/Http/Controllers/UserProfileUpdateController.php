@@ -9,7 +9,7 @@ class UserProfileUpdateController extends Controller
 {
     public function __invoke(UserProfileUpdateRequest $request, User $user)
     {
-        $user->update($request->all());
+        $user->update($request->validated());
 
         return $user;
     }

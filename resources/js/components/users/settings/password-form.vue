@@ -1,10 +1,11 @@
 <template>
-    <div class="card mb-4 card-default">
-        <div class="card-header">
-            Alterar Senha
-        </div>
+    <div class="card mb-4 border-0 shadow-sm">
 
         <div class="card-body">
+            <h5 class="card-title mb-3">
+                Alterar Senha
+            </h5>
+
             <div role="form">
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label text-md-right"> Senha Atual </label>

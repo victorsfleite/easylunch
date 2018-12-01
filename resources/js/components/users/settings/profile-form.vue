@@ -1,11 +1,12 @@
 <template>
-    <div class="card mb-4 card-default">
-        <div class="card-header">
-            Perfil
-        </div>
+    <div class="card mb-4 border-0 shadow-sm">
 
         <div class="card-body">
-            <div role="form">
+            <h5 class="card-title mb-3">
+                Perfil
+            </h5>
+
+            <div>
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label text-md-right"> Nome </label>
                     <div class="col-md-6">

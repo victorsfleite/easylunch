@@ -3,20 +3,27 @@
 @section('content')
 <div class="container">
     <div tole="tabpanel" class="row">
-        <div class="col-md-3">
-            <div class="card card-default card-flush">
-                <div class="card-header">
-                    Configurações
-                </div>
+        <aside class="col-md-3">
+            <div class="nav-settings">
+                <h5 class="nav-heading">Configurações</h5>
 
-                <div role="tablist" class="nav flex-column nav-tabs inner-nav stacked">
-                    <a data-toggle="tab" aria-controls="account" href="#account" role="tab" class="nav-link active show" aria-selected="true">
-                        <i class="fas fa-fw fa-cogs"></i>
-                        Minha Conta
-                    </a>
-                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="{{ route('users.account') }}" class="nav-link {{ active('users.account') }}">
+                            <i class="fas fa-fw fa-user-circle mr-2"></i>
+                            Minha Conta
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('users.account') }}" class="nav-link">
+                            <i class="fas fa-fw fa-globe-americas mr-2"></i>
+                            Idioma
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </div>
+        </aside>
 
         <div class="col-md-9">
             <div class="tab-content">

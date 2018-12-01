@@ -58,7 +58,7 @@ export default {
                 this.$route('user.password.update', { user: this.user.id })
             );
 
-            this.passwordForm = new Form();
+            this.passwordForm.reset();
             this.$toasted.success('Password successfully updated!');
         },
     },

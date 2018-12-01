@@ -2,6 +2,6 @@
 
 @section('content')
 <div class="container">
-    <menus-index date="{{ request()->date }}"></menus-index>
+    <orders-report></orders-report>
 </div>
 @endsection

@@ -14,5 +14,6 @@ $factory->define(Order::class, function (Faker $faker) {
         'menu_id' => function () {
             return factory(Menu::class)->create()->id;
         },
+        'completed_at' => array_random([null, $faker->dateTimeBetween('-1 year')]),
     ];
 });

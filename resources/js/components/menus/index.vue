@@ -18,7 +18,7 @@
         </div>
 
         <resource-table class="border-0 shadow-sm"
-            url="/menus"
+            :url="$route('menus.index')"
             :columns="columns"
             :search="search"
             :options="tableOptions"
@@ -34,15 +34,24 @@
             <template slot="income" slot-scope="{ row: menu }">
                 <div style="width: 80px">R$ {{ menu.income }},00</div>
             </template>
+
+            <template slot="empty-table">
+                <empty title="Nenhum menu ainda" height="250px" class="mt-4"></empty>
+                <a :href="$route('menus.create')" class="btn btn-lg btn-primary d-block mt-3 mb-5 mx-auto w-25">Criar Menu</a>
+            </template>
         </resource-table>
     </div>
 </template>
 
 <script>
 export default {
+    props: {
+        date: { default: null },
+    },
+
     data() {
         return {
-            search: null,
+            search: this.date,
             columns: ['id', 'date', 'image.original', 'description', 'orders.length', 'income'],
             tableOptions: {
                 sortable: ['id', 'date', 'description'],

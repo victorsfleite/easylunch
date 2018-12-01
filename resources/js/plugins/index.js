@@ -5,6 +5,7 @@ import Toasted from 'vue-toasted';
 import moment from 'moment-timezone';
 import Form from './form';
 import { loadProgressBar } from 'axios-progress-bar';
+import VCalendar from 'v-calendar';
 
 window.moment = moment;
 window.Form = Form;
@@ -22,3 +23,5 @@ Vue.use(Toasted, {
     iconPack: 'fontawesome',
     duration: 5000,
 });
+
+Vue.use(VCalendar, { locale: 'pt_BR', firstDayOfWeek: 1 });

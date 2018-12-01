@@ -14,13 +14,6 @@
                             Minha Conta
                         </a>
                     </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('users.account') }}" class="nav-link">
-                            <i class="fas fa-fw fa-globe-americas mr-2"></i>
-                            Idioma
-                        </a>
-                    </li>
                 </ul>
             </div>
         </aside>
@@ -38,8 +31,6 @@
                 </div>
             </div>
         </div>
-
-        
     </div>
 </div>
 @endsection

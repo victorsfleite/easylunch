@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserProfileUpdateRequest;
 use App\Models\User;
 
-class UserProfileUpdateController extends Controller
+class UpdateProfileController extends Controller
 {
     public function __invoke(UserProfileUpdateRequest $request, User $user)
     {

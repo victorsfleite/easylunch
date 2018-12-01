@@ -9,11 +9,16 @@ class OrdersTableSeeder extends Seeder
 {
     public function run()
     {
-        Menu::all()->each(function ($menu) {
-            factory(Order::class, rand(1, 10))->create([
-                'owner_id' => User::all()->random()->id,
+        $users = User::all(['id']);
+
+        Menu::all()->each(function ($menu) use ($users) {
+            factory(Order::class, rand(1, 10))->make([
                 'menu_id'  => $menu->id,
-            ]);
+                'owner_id' => null,
+            ])->each(function ($order) use ($users) {
+                $order->fill(['owner_id' => $users->random()->id]);
+                $order->save();
+            });
         });
     }
 }

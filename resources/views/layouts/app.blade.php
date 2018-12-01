@@ -18,6 +18,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script>
+        window.Globals = <?php echo json_encode(\App\Globals::variables()); ?>;
+    </script>
 </head>
 <body>
     <div id="app">

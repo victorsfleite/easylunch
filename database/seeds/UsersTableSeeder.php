@@ -7,8 +7,8 @@ class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-        factory(User::class)->create(['email' => 'marco@devsquad.com']);
-        factory(User::class)->create(['email' => 'gabriel@devsquad.com']);
-        factory(User::class)->create(['email' => 'victor@devsquad.com']);
+        factory(User::class)->create(['email' => 'team@devsquad.com', 'role' => 'admin']);
+        factory(User::class)->create(['email' => 'chef@devsquad.com', 'role' => 'chef']);
+        factory(User::class)->create(['email' => 'user@devsquad.com', 'role' => 'user']);
     }
 }

@@ -9,6 +9,16 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const ROLE_ADMIN = 'admin';
+    const ROLE_CHEF  = 'chef';
+    const ROLE_USER  = 'user';
+
+    const ROLES      = [
+        self::ROLE_ADMIN,
+        self::ROLE_CHEF,
+        self::ROLE_USER,
+    ];
+
     protected $fillable = [
         'name', 'email', 'password',
     ];
@@ -36,6 +46,11 @@ class User extends Authenticatable
 
     public function isChef()
     {
-        return true;
+        return $this->role == self::ROLE_CHEF;
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == self::ROLE_ADMIN;
     }
 }

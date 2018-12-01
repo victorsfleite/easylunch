@@ -27,6 +27,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = ['is_admin', 'is_chef'];
+
     public function setPasswordAttribute($password)
     {
         if ($password && !is_bool($password)) {
@@ -44,12 +46,12 @@ class User extends Authenticatable
         return $order->owner_id === $this->id;
     }
 
-    public function isChef()
+    public function getIsChefAttribute()
     {
         return $this->role == self::ROLE_CHEF;
     }
 
-    public function isAdmin()
+    public function getIsAdminAttribute()
     {
         return $this->role == self::ROLE_ADMIN;
     }

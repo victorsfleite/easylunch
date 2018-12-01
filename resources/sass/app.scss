@@ -1,7 +1,9 @@
-
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 @import url('https://use.fontawesome.com/releases/v5.5.0/css/all.css');
+
+// Plugins
+@import '~axios-progress-bar/dist/nprogress.css';
 
 // Variables
 @import 'variables';
@@ -12,4 +14,27 @@
 .navbar-laravel {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.nav-settings {
+    @extend .mb-4;
+
+    .nav-heading {
+        @extend .mb-3;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: $gray-500;
+    }
+
+    .nav-link {
+        padding: 0 0 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: $gray-700;
+
+        &:hover,
+        &.active {
+            color: $primary;
+        }
+    }
 }

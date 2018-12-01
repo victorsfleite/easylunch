@@ -1,9 +1,11 @@
 <template>
     <div class="form-group">
         <label v-if="label" :class="{ 'text-danger': form && form.errors.has(field) }">{{ label }}</label>
-        <div ref="editor" class="form-control ql-container ql-bubble" :class="{ focused }"></div>
+        <div ref="editor" class="form-control ql-container ql-bubble"
+            :class="{ focused, 'is-invalid': form && form.errors.has(field) }">
+        </div>
 
-        <p class="invalid-feedback" v-if="form && form.errors.has(field)">{{ form.errors.get(field) }}</p>
+        <p class="invalid-feedback d-block" v-if="form && form.errors.has(field)">{{ form.errors.get(field) }}</p>
     </div>
 </template>
 

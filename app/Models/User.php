@@ -23,4 +23,19 @@ class User extends Authenticatable
             $this->attributes['password'] = bcrypt($password);
         }
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'owner_id');
+    }
+
+    public function createdOrder(Order $order): bool
+    {
+        return $order->owner_id === $this->id;
+    }
+
+    public function isChef()
+    {
+        return true;
+    }
 }

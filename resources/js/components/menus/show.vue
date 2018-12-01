@@ -1,16 +1,64 @@
 <template>
     <div>
-        <h1>Menu de {{ menu.date | date }}</h1>
+        <h1 class="mb-5">Menu de {{ innerMenu.date | date }}</h1>
 
         <div class="row">
             <div class="col-md-4">
-                <img :src="menu.image.original" class="img-thumbnail mb-3" v-if="menu.image.original">
+                <img :src="innerMenu.image.original" class="img-thumbnail mb-3" v-if="innerMenu.image.original">
 
-                <div v-html="menu.description"></div>
+                <div v-html="innerMenu.description"></div>
             </div>
 
             <div class="col-md-8">
-                <p>The Orders will be listed here</p>
+                <div class="d-flex align-items-center mb-3">
+                    <h4 class="mb-0">
+                        Pedidos ({{ orders.length }})
+                        <small class="mb-0 subtitle text-black-50 text-uppercase">(Total: R$ {{ innerMenu.income }},00)</small>
+                    </h4>
+
+                    <a :href="addOrder" class="btn btn-primary ml-auto">
+                        <i class="fa fa-check-circle mr-2"></i>
+                        Adicionar Pedido
+                    </a>
+                </div>
+
+                <empty v-if="orders.length === 0" title="Não há pedidos ainda"></empty>
+
+                <div class="card border-0 shadow-sm mb-3" v-for="order of orders" :key="order.id">
+                    <div class="card-body px-3 pt-3 pb-0">
+                        <b>{{ order.owner && order.owner.name }}: </b>
+                        <span>{{ order.description }}</span>
+                    </div>
+
+                    <div class="px-3 py-2">
+                        <span class="text-success fs-sm" v-if="order.completed_at">
+                            <i class="fa fa-check-double"></i>
+                            Terminada em {{ order.completed_at | date('DD/MM/YY - HH:mm:ss') }}
+                        </span>
+
+                        <span class="text-black-50 fs-sm" v-if="!order.completed_at">
+                            <i class="far fa-question-circle"></i>
+                            Pendente
+                        </span>
+
+                        <div class="float-right" v-if="!order.completed_at">
+                            <a :href="$route('orders.edit', { menu: menu.id, order: order.id })"
+                                class="btn btn-sm btn-light" title="Marcar com Terminada">
+                                <i class="fa fa-pencil-alt"></i>
+                            </a>
+
+                            <button-loading :loading="completing(order)" @click="complete(order)"
+                                class="btn btn-sm btn-light" title="Marcar com Terminada">
+                                <i class="fa fa-check-double" v-if="!completing(order)"></i>
+                            </button-loading>
+
+                            <button-loading :loading="removing(order)" @click="remove(order)"
+                                class="btn btn-sm btn-danger" title="Remover Pedido">
+                                <i class="far fa-trash-alt" v-if="!removing(order)"></i>
+                            </button-loading>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -20,6 +68,79 @@
 export default {
     props: {
         menu: { required: true, type: Object },
+    },
+
+    data() {
+        return {
+            orders: this.menu.orders,
+            completingIds: [],
+            removingIds: [],
+            interval: null,
+            innerMenu: this.menu,
+        };
+    },
+
+    computed: {
+        ordersUrl() {
+            return this.$route('orders.index', { menu: this.menu.id });
+        },
+
+        addOrder() {
+            return this.$route('orders.create', { menu: this.menu.id });
+        },
+    },
+
+    created() {
+        this.interval = setInterval(() => {
+            this.refresh();
+        }, 60000);
+    },
+
+    destroy() {
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+    },
+
+    methods: {
+        async complete(order) {
+            try {
+                this.completingIds.push(order.id);
+                const { data: completed } = await this.$axios.put(this.$route('orders.complete', { menu: this.menu.id, order: order.id }));
+                order.completed_at = completed.completed_at;
+                this.refresh();
+            } finally {
+                this.removeIdOf(order, 'completingIds');
+            }
+        },
+
+        async remove(order) {
+            try {
+                this.removingIds.push(order.id);
+                const { data: removed } = await this.$axios.delete(this.$route('orders.destroy', { menu: this.menu.id, order: order.id }));
+                this.refresh();
+            } finally {
+                this.removeIdOf(order, 'removingIds');
+            }
+        },
+
+        completing(order) {
+            return this.completingIds.includes(order.id);
+        },
+
+        removing(order) {
+            return this.removingIds.includes(order.id);
+        },
+
+        removeIdOf(order, list) {
+            this[list] = this[list].filter(id => id !== order.id);
+        },
+
+        async refresh() {
+            const { data: menu } = await this.$axios.get(this.$route('menus.show', { menu: this.menu.id }));
+            this.orders = menu.data.orders;
+            this.innerMenu = menu.data;
+        },
     },
 };
 </script>

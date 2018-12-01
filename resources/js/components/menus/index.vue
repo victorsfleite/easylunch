@@ -11,7 +11,7 @@
                 <div class="ml-auto">
                     <a href="/menus/create" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
-                        New Menu
+                        Novo Menu
                     </a>
                 </div>
             </div>
@@ -24,11 +24,15 @@
             :options="tableOptions"
             default-sort="-date">
             <template slot="date" slot-scope="{ row: menu }">
-                <div style="width: 180px">{{ menu.date | date }}</div>
+                <a class="d-block" :href="routeToMenu(menu)" style="width: 180px">{{ menu.date | date }}</a>
             </template>
 
             <template slot="description" slot-scope="{ row: menu }">
                 <div v-html="menu.description"></div>
+            </template>
+
+            <template slot="income" slot-scope="{ row: menu }">
+                <div style="width: 80px">R$ {{ menu.income }},00</div>
             </template>
         </resource-table>
     </div>
@@ -39,17 +43,25 @@ export default {
     data() {
         return {
             search: null,
-            columns: ['id', 'date', 'image.original', 'description'],
+            columns: ['id', 'date', 'image.original', 'description', 'orders.length', 'income'],
             tableOptions: {
                 sortable: ['id', 'date', 'description'],
                 headers: {
                     date: 'Data',
                     description: 'Descrição',
+                    income: 'Fatura',
                     'image.original': 'Imagem',
+                    'orders.length': 'Pedidos',
                 },
                 images: ['image.original'],
             },
         };
+    },
+
+    methods: {
+        routeToMenu(menu) {
+            return this.$route('menus.show', { menu: menu.id });
+        },
     },
 };
 </script>

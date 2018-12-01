@@ -14,7 +14,7 @@ class CompleteOrderController extends Controller
     {
         abort_if(!$this->currentUser()->is_chef, Response::HTTP_FORBIDDEN);
 
-        $order->update(['completed_at' => now()]);
+        $order->update(['completed_at' => now('America/Sao_Paulo')]);
 
         return $order;
     }

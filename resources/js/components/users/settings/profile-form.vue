@@ -48,7 +48,7 @@ export default {
     methods: {
         async updateProfile() {
             const { data: updated } = await this.profileForm.put(
-                this.$route('user.profile.update', { user: this.user.id })
+                this.$route('users.profile-update', { user: this.user.id })
             );
 
             this.profileForm = new Form(updated);

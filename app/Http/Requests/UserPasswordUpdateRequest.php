@@ -3,19 +3,20 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserPasswordUpdateRequest extends FormRequest
 {
     public function authorize()
     {
-        return true;
+        return Auth::id() === $this->user->id;
     }
 
     public function rules()
     {
         return [
             'current_password' => 'required',
-            'password' => 'required|string|min:6|confirmed',
+            'password'         => 'required|string|min:6|confirmed',
         ];
     }
 

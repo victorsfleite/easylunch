@@ -3,12 +3,13 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserProfileUpdateRequest extends FormRequest
 {
     public function authorize()
     {
-        return true;
+        return Auth::id() === $this->user->id;
     }
 
     public function rules()

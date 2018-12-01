@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserPasswordUpdateRequest;
+use App\Http\Requests\Users\UserPasswordUpdateRequest;
 use App\Models\User;
 
 class UserPasswordUpdateController extends Controller

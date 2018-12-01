@@ -10,3 +10,4 @@ Vue.component('confirmation', require('./confirmation'));
 Vue.component('pagination', require('./pagination'));
 Vue.component('select-file', require('./select-file'));
 Vue.component('resource-table', require('./resource-table'));
+Vue.component('empty', require('./empty'));

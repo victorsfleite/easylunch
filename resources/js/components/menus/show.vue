@@ -22,6 +22,8 @@
                     </a>
                 </div>
 
+                <empty v-if="orders.length === 0" title="Não há pedidos ainda"></empty>
+
                 <div class="card border-0 shadow-sm mb-3" v-for="order of orders" :key="order.id">
                     <div class="card-body px-3 pt-3 pb-0">
                         <b>{{ order.owner && order.owner.name }}: </b>

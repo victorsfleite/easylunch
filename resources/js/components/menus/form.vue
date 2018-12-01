@@ -35,6 +35,7 @@ export default {
 
     methods: {
         async create() {
+            this.treatDescription();
             const { data: created } = await this.form.post(this.$route('menus.store'));
 
             this.$toasted.success('Resource created');
@@ -42,6 +43,7 @@ export default {
         },
 
         async update() {
+            this.treatDescription();
             const { data: updated } = await this.form.put(
                 this.$route('menus.update', {
                     menu: this.form.id,
@@ -51,6 +53,12 @@ export default {
             this.form = new Form(updated.data);
             this.$toasted.success('Resource updated');
             window.location.href = this.$route('menus');
+        },
+
+        treatDescription() {
+            if (this.form.description === '<p><br></p>') {
+                this.form.description = '';
+            }
         },
     },
 };

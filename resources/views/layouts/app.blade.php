@@ -55,9 +55,15 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('users.account') }}">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{ __('Minha Conta') }}
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt mr-1"></i>
                                         {{ __('Logout') }}
                                     </a>
 

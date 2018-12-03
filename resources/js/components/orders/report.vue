@@ -25,16 +25,6 @@
                             a(:href="$route('menus', { date })") {{ date | date }}
                         td {{ report.count_orders }}
                         td R$ {{ report.total.toFixed(2) }}
-                    //- tr
-                    //-     td
-                    //-         a(href="#") 10/12/2018
-                    //-     td 5
-                    //-     td R$ 50,00
-                    //- tr
-                    //-     td
-                    //-         a(href="#") 10/12/2018
-                    //-     td 5
-                    //-     td R$ 50,00
                     tr.text-uppercase.font-weight-bold.text-success
                         td.text-right(colspan="2") TOTAL :
                         td R$ {{ total.toFixed(2) }}

@@ -13,7 +13,7 @@
                 <div class="d-flex align-items-center mb-3">
                     <h4 class="mb-0">
                         Pedidos ({{ orders.length }})
-                        <small class="mb-0 subtitle text-black-50 text-uppercase">(Total: R$ {{ innerMenu.income }},00)</small>
+                        <small class="mb-0 subtitle text-black-50 text-uppercase" v-if="$user.is_chef || $user.is_admin">(Total: R$ {{ innerMenu.income_preview.toFixed(2) }})</small>
                     </h4>
 
                     <a :href="addOrder" class="btn btn-primary ml-auto">

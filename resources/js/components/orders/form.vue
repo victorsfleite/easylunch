@@ -5,11 +5,11 @@
                 h3.mb-0 Novo Pedido
             .col-md-8.mb-3
                 .d-flex.align-items-center
-                    a.btn.btn-default.ml-auto.mr-2(:href="$route('menus.show', { menu: form.menu_id })") Back to Menu
+                    a.btn.btn-default.ml-auto.mr-2(:href="$route('menus.show', { menu: form.menu_id })") Voltar ao Menu
                     button-loading.btn.btn-primary(@click='update', v-if='form.id', :loading='form.submitting')
-                        | Update
+                        | Atualizar
                     button-loading.btn.btn-primary(@click='create', v-if='!form.id', :loading='form.submitting')
-                        | Create
+                        | Criar
         div
             input-textarea(:form="form", field="description", label="Descrição do Pedido", v-model="form.description")
 </template>

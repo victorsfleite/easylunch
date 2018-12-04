@@ -13,7 +13,7 @@
                 <div class="d-flex align-items-center mb-3">
                     <h4 class="mb-0">
                         Pedidos ({{ orders.length }})
-                        <small class="mb-0 subtitle text-black-50 text-uppercase">(Total: R$ {{ innerMenu.income }},00)</small>
+                        <small class="mb-0 subtitle text-black-50 text-uppercase" v-if="$user.is_chef || $user.is_admin">(Total: R$ {{ innerMenu.income_preview.toFixed(2) }})</small>
                     </h4>
 
                     <a :href="addOrder" class="btn btn-primary ml-auto">
@@ -33,7 +33,7 @@
                     <div class="px-3 py-2">
                         <span class="text-success fs-sm" v-if="order.completed_at">
                             <i class="fa fa-check-double"></i>
-                            Terminada em {{ order.completed_at | date('DD/MM/YY - HH:mm:ss') }}
+                            Concluído {{ order.completed_at | from_now }}
                         </span>
 
                         <span class="text-black-50 fs-sm" v-if="!order.completed_at">
@@ -43,17 +43,21 @@
 
                         <div class="float-right" v-if="!order.completed_at">
                             <a :href="$route('orders.edit', { menu: menu.id, order: order.id })"
-                                class="btn btn-sm btn-light" title="Marcar com Terminada">
+                                v-if="order.owner_id === $user.id"
+                                class="btn btn-sm btn-outline-secondary" title="Editar">
                                 <i class="fa fa-pencil-alt"></i>
                             </a>
 
                             <button-loading :loading="completing(order)" @click="complete(order)"
-                                class="btn btn-sm btn-light" title="Marcar com Terminada">
-                                <i class="fa fa-check-double" v-if="!completing(order)"></i>
+                                v-if="$user.is_chef"
+                                class="btn btn-sm btn-outline-success" title="Marcar com Terminada">
+                                <i class="fa fa-thumbs-up" v-if="!completing(order)"></i>
+                                Pronto
                             </button-loading>
 
                             <button-loading :loading="removing(order)" @click="remove(order)"
-                                class="btn btn-sm btn-danger" title="Remover Pedido">
+                                v-if="order.owner_id === $user.id"
+                                class="btn btn-sm btn-outline-danger" title="Remover Pedido">
                                 <i class="far fa-trash-alt" v-if="!removing(order)"></i>
                             </button-loading>
                         </div>

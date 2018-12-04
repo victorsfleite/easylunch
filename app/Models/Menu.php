@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Traits\Models\Searchable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
@@ -19,15 +21,28 @@ class Menu extends Model implements HasMedia
 
     protected $searchableFields = [
         'description',
+        'date'
     ];
 
-    protected $appends = ['image', 'income'];
+    protected $appends = ['image', 'income', 'income_preview'];
 
     public function registerMediaCollections()
     {
         $this
             ->addMediaCollection('image')
             ->singleFile();
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function scopeCompleted(Builder $query)
+    {
+        return $query->whereHas('orders', function ($order) {
+            $order->completed();
+        });
     }
 
     public function getImageAttribute()
@@ -37,15 +52,18 @@ class Menu extends Model implements HasMedia
         ];
     }
 
-    public function orders(): HasMany
+    public function getIncomePreviewAttribute()
     {
-        return $this->hasMany(Order::class);
+        return $this->calculateIncome($this->orders()->count());
     }
 
     public function getIncomeAttribute()
     {
-        $ordersCount = $this->orders()->count();
+        return $this->calculateIncome($this->orders()->completed()->count());
+    }
 
+    public function calculateIncome(int $ordersCount)
+    {
         $pricePerUnit = 12;
 
         if ($ordersCount >= 5) {

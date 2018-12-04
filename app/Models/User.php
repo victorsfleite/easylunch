@@ -9,6 +9,16 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const ROLE_ADMIN = 'admin';
+    const ROLE_CHEF  = 'chef';
+    const ROLE_USER  = 'user';
+
+    const ROLES      = [
+        self::ROLE_ADMIN,
+        self::ROLE_CHEF,
+        self::ROLE_USER,
+    ];
+
     protected $fillable = [
         'name', 'email', 'password',
     ];
@@ -16,6 +26,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $appends = ['is_admin', 'is_chef'];
 
     public function setPasswordAttribute($password)
     {
@@ -34,8 +46,13 @@ class User extends Authenticatable
         return $order->owner_id === $this->id;
     }
 
-    public function isChef()
+    public function getIsChefAttribute()
     {
-        return true;
+        return $this->role == self::ROLE_CHEF;
+    }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->role == self::ROLE_ADMIN;
     }
 }

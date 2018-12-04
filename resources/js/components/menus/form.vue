@@ -2,26 +2,28 @@
     div
         .row.mb-0
             .col-md-4.mb-3
-                h3.mb-0 Menu Form
+                h3.mb-0 Novo Menu
             .col-md-8.mb-3
                 .d-flex.align-items-center
-                    a.btn.btn-default.ml-auto.mr-2(:href="$route('menus')") Back to List
+                    a.btn.btn-default.ml-auto.mr-2(:href="$route('menus')") Voltar Pra Lista
                     button-loading.btn.btn-primary(@click='update', v-if='form.id', :loading='form.submitting')
-                        | Update
+                        | Atualizar
                     button-loading.btn.btn-primary(@click='create', v-if='!form.id', :loading='form.submitting')
-                        | Create
+                        | Criar
         div
             select-file.d-flex.justify-content-center(
                 @change="form.new_image = $event"
                 :image="form.image && form.image.original"
                 accept="image/*",
                 width="200px",
-                icon="fa fa-3x fa-camera") Image
-            input-text(type="date", :form="form", field="date", label="Date", v-model="form.date")
-            input-texteditor(:form="form", field="description", label="Description", v-model="form.description")
+                icon="fa fa-3x fa-camera") Imagem
+            input-text(type="date", :form="form", field="date", label="Data", v-model="form.date")
+            input-texteditor(:form="form", field="description", label="Descrição do Menu", v-model="form.description")
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
     props: {
         resource: { default: null },
@@ -31,6 +33,12 @@ export default {
         return {
             form: new Form(this.resource || {}, 'multipart'),
         };
+    },
+
+    created() {
+        if (!this.form.id) {
+            this.form.date = moment().format('YYYY-MM-DD');
+        }
     },
 
     methods: {

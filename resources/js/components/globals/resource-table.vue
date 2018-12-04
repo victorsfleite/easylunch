@@ -50,7 +50,7 @@
                         dropdown-classes="dropdown-menu-right")
                         i.far.fa-trash-alt.text-black-50
                         div(slot="items")
-                            a.dropdown-item(href="#", @click.prevent="confirmBulkDelete") Delete All ({{ selected.length }})
+                            a.dropdown-item(href="#", @click.prevent="confirmBulkDelete" v-if="canDelete") Delete All ({{ selected.length }})
 
         .table-responsive
             table.table.mb-0
@@ -99,11 +99,11 @@
                                 slot(:row="resource", name="actions")
                                     a.btn.btn-sm.bg-transparent(:href="resourceUrl(resource)")
                                         i.far.fa-eye.text-black-50
-                                    a.btn.btn-sm.bg-transparent(:href="editUrl(resource)")
+                                    a.btn.btn-sm.bg-transparent(:href="editUrl(resource)" v-if="canEdit")
                                         i.far.fa-edit.text-black-50
                                 button.btn.btn-sm.bg-transparent(
                                     @click="confirmRemove(resource)",
-                                    v-if="!wasSoftDeleted(resource) && resourceUrl(resource)")
+                                    v-if="!wasSoftDeleted(resource) && resourceUrl(resource) && canDelete")
                                     i.far.fa-trash-alt.text-black-50
                                 button.btn.btn-sm.bg-transparent(
                                     @click="confirmForceDelete(resource)",
@@ -268,6 +268,20 @@ export default {
             required: false,
             default: 'id',
             type: String,
+        },
+
+        /**
+         * Permission to delete operations
+         */
+        canDelete: {
+            default: true,
+        },
+
+        /**
+         * Permission to delete operations
+         */
+        canEdit: {
+            default: true,
         },
     },
 

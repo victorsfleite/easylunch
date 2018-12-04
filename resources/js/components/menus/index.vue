@@ -7,7 +7,7 @@
                 </input-text>
             </div>
 
-            <div class="col-md-4 ml-auto d-flex mb-3">
+            <div class="col-md-4 ml-auto d-flex mb-3" v-if="$user.is_chef || $user.is_admin">
                 <div class="ml-auto">
                     <a href="/menus/create" class="btn btn-primary">
                         <i class="fa fa-plus"></i>

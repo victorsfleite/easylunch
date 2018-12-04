@@ -8,7 +8,7 @@ class MenuRequest extends FormRequest
 {
     public function authorize()
     {
-        return true;
+        return $this->user()->is_chef || $this->user()->is_admin;
     }
 
     public function rules()

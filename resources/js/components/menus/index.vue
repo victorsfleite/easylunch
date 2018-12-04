@@ -21,6 +21,8 @@
             :url="$route('menus.index')"
             :columns="columns"
             :search="search"
+            :can-delete="$user.is_chef || $user.is_admin"
+            :can-edit="$user.is_chef || $user.is_admin"
             :options="tableOptions"
             default-sort="-date">
             <template slot="date" slot-scope="{ row: menu }">

@@ -45,8 +45,6 @@ class MenuController extends Controller
 
     public function show(Request $request, Menu $menu)
     {
-        $menu->load('orders');
-
         return $request->ajax()
             ? DataResource::make($menu)
             : view('menus.show', compact('menu'));

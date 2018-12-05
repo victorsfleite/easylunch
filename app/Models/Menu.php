@@ -24,6 +24,8 @@ class Menu extends Model implements HasMedia
         'date'
     ];
 
+    protected $with = ['orders'];
+
     protected $appends = ['image', 'income', 'income_preview'];
 
     public function registerMediaCollections()

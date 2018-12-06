@@ -66,14 +66,6 @@ class Menu extends Model implements HasMedia
 
     public function calculateIncome(int $ordersCount)
     {
-        $pricePerUnit = 12;
-
-        if ($ordersCount >= 5) {
-            $pricePerUnit = 10;
-        } elseif ($ordersCount >= 3) {
-            $pricePerUnit = 11;
-        }
-
-        return $pricePerUnit * $ordersCount;
+        return 10 * $ordersCount;
     }
 }

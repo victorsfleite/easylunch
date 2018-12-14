@@ -9,7 +9,7 @@ class OrdersTableSeeder extends Seeder
 {
     public function run()
     {
-        $users = User::all(['id']);
+        $users = User::all('id');
 
         Menu::all()->each(function ($menu) use ($users) {
             factory(Order::class, rand(1, 10))->make([

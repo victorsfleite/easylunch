@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Menus;
+namespace App\Http\Controllers\Reports;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Menus\ReportRequest;
@@ -19,14 +19,14 @@ class ReportController extends Controller
         return Menu::with('orders')
             ->completed()
             ->where('date', '>=', $start->toDateString())
-            ->where('date', '<=', $end->subDay(1)->toDateString())
+            ->where('date', '<=', $end->addDay()->toDateString())
             ->orderBy('date')
             ->get()
             ->groupBy('date')
             ->map(function ($report, $date) {
                 return [
                     'count_orders' => $report->reduce(function ($carry, $menu) {
-                        return $carry + $menu->orders->count();
+                        return $carry + $menu->orders()->completed()->count();
                     }),
                     'total' => $report->reduce(function ($total, $menu) {
                         return $total + $menu->income;

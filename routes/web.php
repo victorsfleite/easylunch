@@ -30,8 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::put('menus/{menu}/orders/{order}/complete', 'Orders\CompleteOrderController')->name('orders.complete');
     Route::resource('menus/{menu}/orders', 'OrderController');
 
+    // Reports
+    Route::post('reports/orders', 'Reports\ReportController')->name('reports.orders');
+    Route::post('reports/users', 'Reports\UserReportsController')->name('reports.users');
     // Menus
-    Route::post('menus/get-reports', 'Menus\ReportController')->name('menus.get-reports');
     Route::view('menus/report', 'menus.report')->name('menus.report');
     Route::get('menus/list', 'MenuController@list')->name('menus');
     Route::post('menus/bulk-destroy', 'MenuController@bulkDestroy')->name('menus.bulk-destroy');

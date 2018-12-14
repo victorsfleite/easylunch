@@ -43,4 +43,12 @@ class Order extends Model
     {
         return $query->whereNotNull('completed_at');
     }
+
+    public function scopeBetweenDates(Builder $query, $dates): Builder
+    {
+        return $query->whereHas('menu', function ($menu) use ($dates) {
+            $menu->where('date', '>=', $dates[0] ?? $dates['start'] ?? $dates)
+                ->where('date', '<=', $dates[1] ?? $dates['end'] ?? today());
+        });
+    }
 }

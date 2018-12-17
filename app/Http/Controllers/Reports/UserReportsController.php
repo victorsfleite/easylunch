@@ -22,6 +22,8 @@ class UserReportsController extends Controller
                 'count_orders' => $countOrders,
                 'total_amount' => $countOrders * 10,
             ];
+        })->filter(function ($user) {
+            return $user['count_orders'] > 0;
         });
 
         return DataResource::collection($report);

@@ -44,7 +44,7 @@ class UserReportsControllerTest extends TestCase
     /** @test */
     public function it_returns_the_total_amount_of_the_users_in_a_date_range()
     {
-        $user1 = $this->admin();
+        $user1 = create(User::class);
         $menu1 = create(Menu::class, ['date' => today()->toDateString()]);
         create(Order::class, ['owner_id' => $user1, 'menu_id'  => $menu1, 'completed_at' => now()]);
         create(Order::class, ['owner_id' => $user1, 'menu_id'  => $menu1, 'completed_at' => now()]);

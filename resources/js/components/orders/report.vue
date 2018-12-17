@@ -26,7 +26,8 @@
                         td {{ report.count_orders }}
                         td R$ {{ report.total.toFixed(2) }}
                     tr.text-uppercase.font-weight-bold.text-success
-                        td.text-right(colspan="2") TOTAL :
+                        td.text-right TOTAL :
+                        td {{ totalOrdersReport }}
                         td R$ {{ total.toFixed(2) }}
         
         div(v-if="$user.is_admin")
@@ -44,7 +45,8 @@
                             td {{ user.count_orders }}
                             td R$ {{ user.total_amount }}
                         tr.text-uppercase.font-weight-bold.text-success
-                            td.text-right(colspan="2") TOTAL :
+                            td.text-right TOTAL :
+                            td {{ totalOrdersUsersReport }}
                             td R$ {{ totalUsers }}
 </template>
 
@@ -76,7 +78,6 @@ export default {
     computed: {
         total() {
             if (!this.reports) return 0;
-            const total = 0;
             return Object.keys(this.reports)
                 .map(date => this.reports[date].total)
                 .reduce((a, b) => a + b, 0);
@@ -87,6 +88,17 @@ export default {
                 ? 0
                 : this.users
                     .reduce((a, b) => a + b.total_amount, 0);
+        },
+
+        totalOrdersReport() {
+            if (!this.reports) return 0;
+            return Object.keys(this.reports)
+                .map(date => this.reports[date].count_orders)
+                .reduce((a, b) => a + b, 0);
+        },
+
+        totalOrdersUsersReport() {
+            return this.users && this.users.reduce((a, b) => a + b.count_orders, 0);
         }
     },
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Models\Searchable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -47,8 +48,10 @@ class Order extends Model
     public function scopeBetweenDates(Builder $query, $dates): Builder
     {
         return $query->whereHas('menu', function ($menu) use ($dates) {
-            $menu->where('date', '>=', $dates[0] ?? $dates['start'] ?? $dates)
-                ->where('date', '<=', $dates[1] ?? $dates['end'] ?? today());
+            $start = new Carbon($dates[0] ?? $dates['start'] ?? $dates);
+            $end = new Carbon($dates[1] ?? $dates['end'] ?? today());
+            $menu->where('date', '>=', $start->toDateString())
+                ->where('date', '<=', $end->toDateString());
         });
     }
 }

@@ -12,12 +12,11 @@ class OrdersTableSeeder extends Seeder
         $users = User::all('id');
 
         Menu::all()->each(function ($menu) use ($users) {
-            factory(Order::class, rand(1, 10))->make([
-                'menu_id'  => $menu->id,
-                'owner_id' => null,
-            ])->each(function ($order) use ($users) {
-                $order->fill(['owner_id' => $users->random()->id]);
-                $order->save();
+            $users->take(rand(3, 5))->each(function ($user) use ($menu) {
+                create(Order::class, [
+                    'menu_id'  => $menu->id,
+                    'owner_id' => $user->id,
+                ]);
             });
         });
     }

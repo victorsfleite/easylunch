@@ -13,7 +13,7 @@ class UserReportsController extends Controller
     {
         $range = $request->only('start', 'end');
 
-        $report = User::with('orders')->get()->map(function (User $user) use ($range) {
+        $report = User::with('orders')->orderBy('name')->get()->map(function (User $user) use ($range) {
             $countOrders = $user->orders()->completed()->betweenDates($range)->count();
 
             return [

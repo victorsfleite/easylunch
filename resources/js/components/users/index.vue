@@ -22,6 +22,7 @@
             :columns="columns"
             :search="search"
             :options="tableOptions"
+            :can-show="false"
             default-sort="-id">
             <template slot="role" slot-scope="{ row: user }">
                 <h5><span class="badge" :class="'badge-'+roleBadge(user.role)">{{ user.role | capitalize }}</span></h5>

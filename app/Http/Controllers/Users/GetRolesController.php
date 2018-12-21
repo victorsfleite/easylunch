@@ -15,8 +15,8 @@ class GetRolesController extends Controller
 
         return collect(User::ROLES)->map(function ($role) {
             return [
-                'name' => $role,
-                'label' => ucfirst($role),
+                'value' => $role,
+                'name' => ucfirst($role),
             ];
         })->toArray();
     }

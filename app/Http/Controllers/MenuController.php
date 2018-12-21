@@ -6,6 +6,7 @@ use App\Http\Requests\MenuBulkDestroyRequest;
 use App\Http\Requests\MenuRequest;
 use App\Http\Resources\DataResource;
 use App\Models\Menu;
+use App\Notifications\MenuCreated;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -39,6 +40,8 @@ class MenuController extends Controller
         $menu = Menu::create($request->validated());
 
         $this->addMediaIfExists($menu, 'new_image', 'image');
+
+        $this->currentUser()->notify(new MenuCreated);
 
         return DataResource::make($menu);
     }

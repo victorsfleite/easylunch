@@ -16,6 +16,13 @@
             <h6 class="subtitle text-muted mb-5"> Pedidos encerram exatamente às {{ timeLimit | date('HH:mm') }} </h6>
 
             <div class="row" v-if="innerMenu">
+                <div class="col-md-4">
+                    <img :src="innerMenu.image.original" class="img-thumbnail mb-3"
+                        v-if="innerMenu.image && innerMenu.image.original">
+
+                    <div v-html="innerMenu.description"></div>
+                </div>
+
                 <div class="col-md-8">
                     <div class="d-flex align-items-center mb-3">
                         <h4 class="mb-0">
@@ -76,13 +83,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-md-4">
-                    <img :src="innerMenu.image.original" class="img-thumbnail mb-3"
-                        v-if="innerMenu.image && innerMenu.image.original">
-
-                    <div v-html="innerMenu.description"></div>
                 </div>
             </div>
         </template>

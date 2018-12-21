@@ -74,4 +74,9 @@ class User extends Authenticatable
             $order->betweenDates($range);
         });
     }
+
+    public function routeNotificationForSlack($notification)
+    {
+        return 'https://hooks.slack.com/services/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';
+    }
 }

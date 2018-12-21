@@ -14,7 +14,7 @@
                     </button>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body" :class="bodyClasses">
                     <slot></slot>
                 </div>
 
@@ -33,6 +33,7 @@ export default {
         centered: { default: false },
         effect: { default: 'fade' },
         hasFooter: { default: true },
+        bodyClasses: { default: '' },
     },
     methods: {
         open() {
@@ -47,15 +48,21 @@ export default {
     mounted() {
         const el = $(this.$el).detach();
         $('body').prepend(el);
-        $(this.$el).on('hide.bs.modal', (event) => { this.$emit('hide', event) });
-        $(this.$el).on('hidden.bs.modal', (event) => { this.$emit('hidden', event) });
-        $(this.$el).on('show.bs.modal', (event) => { this.$emit('show', event) });
-        $(this.$el).on('shown.bs.modal', (event) => {
+        $(this.$el).on('hide.bs.modal', event => {
+            this.$emit('hide', event);
+        });
+        $(this.$el).on('hidden.bs.modal', event => {
+            this.$emit('hidden', event);
+        });
+        $(this.$el).on('show.bs.modal', event => {
+            this.$emit('show', event);
+        });
+        $(this.$el).on('shown.bs.modal', event => {
             this.$emit('shown', event);
             $('body').addClass('modal-open');
         });
-    }
-}
+    },
+};
 </script>
 
 <style lang="sass" scoped>

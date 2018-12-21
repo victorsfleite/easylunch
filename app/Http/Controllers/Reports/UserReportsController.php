@@ -14,16 +14,16 @@ class UserReportsController extends Controller
         $range = $request->only('start', 'end');
 
         $report = User::with('orders')->orderBy('name')->get()->map(function (User $user) use ($range) {
-            $countOrders = $user->orders()->completed()->betweenDates($range)->count();
+            $orders = $user->orders()->with('owner')->completed()->betweenDates($range)->get();
 
             return [
                 'id'           => $user->id,
                 'name'         => $user->name,
-                'count_orders' => $countOrders,
-                'total_amount' => $countOrders * 10,
+                'orders'       => $orders,
+                'total_amount' => $orders->count() * 10,
             ];
         })->filter(function ($user) {
-            return $user['count_orders'] > 0;
+            return $user['orders']->count() > 0;
         });
 
         return DataResource::collection($report);

@@ -44,45 +44,33 @@
 
                     <empty v-if="orders.length === 0" title="Não há pedidos ainda"></empty>
 
-                    <div class="card border-0 shadow-sm mb-3" v-for="order of orders" :key="order.id">
-                        <div class="card-body px-3 pt-3 pb-0">
-                            <b>{{ order.owner && order.owner.name }}: </b>
-                            <span>{{ order.description }}</span>
-                        </div>
-
-                        <div class="px-3 py-2">
-                            <span class="text-success fs-sm" v-if="order.completed_at">
-                                <i class="fa fa-check-double"></i>
-                                Concluído {{ order.completed_at | from_now }}
-                            </span>
-
-                            <span class="text-black-50 fs-sm" v-if="!order.completed_at">
-                                <i class="far fa-question-circle"></i>
-                                Pendente
-                            </span>
-
+                    <order-card v-for="order of orders" :order="order" :key="order.id">
+                        <template slot="actions">
                             <div class="float-right" v-if="!order.completed_at">
-                                <button @click="editOrder(order)"
+                                <button class="btn btn-sm btn-outline-secondary"
+                                    @click="editOrder(order)"
                                     v-if="order.owner_id === $user.id"
-                                    class="btn btn-sm btn-outline-secondary" title="Editar">
+                                    title="Editar">
                                     <i class="fa fa-pencil-alt"></i>
                                 </button>
 
-                                <button-loading :loading="completing(order)" @click="complete(order)"
-                                    v-if="$user.is_chef"
-                                    class="btn btn-sm btn-outline-success" title="Marcar com Terminada">
+                                <button-loading class="btn btn-sm btn-outline-success"
+                                    :loading="completing(order)"
+                                    @click="complete(order)"
+                                    v-if="$user.is_chef" title="Marcar com Terminada">
                                     <i class="fa fa-thumbs-up" v-if="!completing(order)"></i>
                                     Pronto
                                 </button-loading>
 
-                                <button-loading :loading="removing(order)" @click="remove(order)"
-                                    v-if="order.owner_id === $user.id"
-                                    class="btn btn-sm btn-outline-danger" title="Remover Pedido">
+                                <button-loading class="btn btn-sm btn-outline-danger"
+                                    :loading="removing(order)"
+                                    @click="remove(order)"
+                                    v-if="order.owner_id === $user.id" title="Remover Pedido">
                                     <i class="far fa-trash-alt" v-if="!removing(order)"></i>
                                 </button-loading>
                             </div>
-                        </div>
-                    </div>
+                        </template>
+                    </order-card>
                 </div>
             </div>
         </template>
@@ -91,8 +79,11 @@
 
 <script>
 import moment from 'moment';
+import OrderCard from '@/components/orders/card';
 
 export default {
+    components: { OrderCard },
+
     props: {
         menu: { type: Object },
     },

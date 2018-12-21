@@ -51,6 +51,7 @@ class UserReportsControllerTest extends TestCase
         create(Order::class, ['owner_id' => $user1, 'menu_id'  => $menu1, 'completed_at' => null]);
         $range = array_flatten($this->dateRange());
         $user1->refresh();
+        $user1Orders = $user1->orders()->completed()->betweenDates($range)->get();
 
         $this->assertEquals(2, $user1->orders()->completed()->betweenDates($range)->count());
         $this->assertEquals(20, $user1->totalAmountInRange($range));
@@ -62,7 +63,7 @@ class UserReportsControllerTest extends TestCase
                     [
                         'id'           => $user1->id,
                         'name'         => $user1->name,
-                        'count_orders' => $user1->orders()->completed()->betweenDates($range)->count(),
+                        'orders'       => $user1Orders->toArray(),
                         'total_amount' => $user1->totalAmountInRange($range),
                     ]
                 ]

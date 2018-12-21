@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Http\Resources\DataResource;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\UserBulkDestroyRequest;
 use App\Http\Requests\Users\UserCreateRequest;
 use App\Http\Requests\Users\UserUpdateRequest;
+use App\Http\Resources\DataResource;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {

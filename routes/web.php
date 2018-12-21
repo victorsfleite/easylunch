@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::post('menus/bulk-destroy', 'MenuController@bulkDestroy')->name('menus.bulk-destroy');
     Route::resource('menus', 'MenuController');
 
-    Route::middleware('isAdmin')->group(function () {
+    Route::middleware('admin')->group(function () {
         // Users
         Route::get('/users/roles', 'Users\GetRolesController')->name('users.roles');
         Route::get('users/index', 'UserController@list')->name('users');

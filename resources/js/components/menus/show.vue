@@ -23,10 +23,16 @@
                             <small class="mb-0 subtitle text-black-50 text-uppercase" v-if="$user.is_chef || $user.is_admin">(Total: R$ {{ innerMenu.income_preview.toFixed(2) }})</small>
                         </h4>
 
-                        <a :href="addOrder" class="btn btn-primary ml-auto" v-if="allowedToAddOrder">
+                        <button type="button" @click="addNewOrder" class="btn btn-primary ml-auto" v-if="allowedToAddOrder">
                             <i class="fa fa-check-circle mr-2"></i>
                             Adicionar Pedido
-                        </a>
+                        </button>
+                    </div>
+
+                    <div class="card border-0 shadow-sm mb-5" v-if="showOrderForm">
+                        <div class="card-body">
+                            <orders-form :resource="order" @saved="savedOrder" @canceled="showOrderForm = false"></orders-form>
+                        </div>
                     </div>
 
                     <empty v-if="orders.length === 0" title="Não há pedidos ainda"></empty>
@@ -49,11 +55,11 @@
                             </span>
 
                             <div class="float-right" v-if="!order.completed_at">
-                                <a :href="$route('orders.edit', { menu: menu.id, order: order.id })"
+                                <button @click="editOrder(order)"
                                     v-if="order.owner_id === $user.id"
                                     class="btn btn-sm btn-outline-secondary" title="Editar">
                                     <i class="fa fa-pencil-alt"></i>
-                                </a>
+                                </button>
 
                                 <button-loading :loading="completing(order)" @click="complete(order)"
                                     v-if="$user.is_chef"
@@ -94,11 +100,13 @@ export default {
     data() {
         return {
             orders: (this.menu && this.menu.orders) || [],
+            order: { menu_id: this.menu.id },
             completingIds: [],
             removingIds: [],
             interval: null,
             innerMenu: this.menu,
             allowed_time: '10:30',
+            showOrderForm: false,
         };
     },
 
@@ -183,6 +191,21 @@ export default {
             const { data: menu } = await this.$axios.get(this.$route('menus.show', { menu: this.menu.id }));
             this.orders = menu.data.orders;
             this.innerMenu = menu.data;
+        },
+
+        addNewOrder() {
+            this.showOrderForm = true;
+            this.order = { menu_id: this.menu.id };
+        },
+
+        editOrder(order) {
+            this.order = order;
+            this.showOrderForm = true;
+        },
+
+        savedOrder() {
+            this.showOrderForm = false;
+            this.refresh();
         },
     },
 };

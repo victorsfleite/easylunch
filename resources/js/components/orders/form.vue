@@ -1,17 +1,14 @@
 <template lang="pug">
     div
-        .row.mb-0
-            .col-md-4.mb-3
-                h3.mb-0 Novo Pedido
-            .col-md-8.mb-3
-                .d-flex.align-items-center
-                    a.btn.btn-default.ml-auto.mr-2(:href="$route('menus.show', { menu: form.menu_id })") Voltar ao Menu
-                    button-loading.btn.btn-primary(@click='update', v-if='form.id', :loading='form.submitting')
-                        | Atualizar
-                    button-loading.btn.btn-primary(@click='create', v-if='!form.id', :loading='form.submitting')
-                        | Criar
         div
             input-textarea(:form="form", field="description", label="Descrição do Pedido", v-model="form.description")
+
+        .d-flex.align-items-center
+            button.btn.btn-default.ml-auto.mr-2(@click="$emit('canceled')") Cancelar
+            button-loading.btn.btn-primary(@click='update', v-if='form.id', :loading='form.submitting')
+                | Atualizar
+            button-loading.btn.btn-primary(@click='create', v-if='!form.id', :loading='form.submitting')
+                | Criar
 </template>
 
 <script>
@@ -30,8 +27,8 @@ export default {
         async create() {
             const { data: created } = await this.form.post(this.$route('orders.store', { menu: this.form.menu_id }));
 
-            this.$toasted.success('Resource created');
-            window.location.href = this.$route('menus.show', { menu: this.form.menu_id });
+            this.$toasted.success('Pedido criado com sucesso.');
+            this.$emit('saved', created.data);
         },
 
         async update() {
@@ -43,8 +40,8 @@ export default {
             );
 
             this.form = new Form(updated.data);
-            this.$toasted.success('Resource updated');
-            window.location.href = this.$route('menus.show', { menu: this.form.menu_id });
+            this.$toasted.success('Pedido atualizado com sucesso.');
+            this.$emit('saved', updated.data);
         },
     },
 };

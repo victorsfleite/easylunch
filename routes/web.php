@@ -20,9 +20,13 @@ Route::get('today', 'Menus\MenuOfTheDayController')->name('menus.today');
 
 Route::middleware('auth')->group(function () {
     // Users
+    Route::get('users/index', 'UserController@list')->name('users');
+    Route::post('users/bulk-destroy', 'UserController@bulkDestroy')->name('users.bulk-destroy');
+    Route::resource('users', 'UserController');
     Route::view('/users/account', 'users.account')->name('users.account');
     Route::put('/users/{user}/profile-update', 'Users\UpdateProfileController')->name('users.profile-update');
     Route::put('/users/{user}/password-update', 'Users\UpdatePasswordController')->name('users.password-update');
+    // Route::get('/users/roles', 'Users\GetRolesController')->name('users.roles');
 
     // Orders
     Route::get('menus/{menu}/orders/index', 'OrderController@list')->name('orders');

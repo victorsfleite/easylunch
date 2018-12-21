@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\Searchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Searchable, Notifiable;
 
     const ROLE_ADMIN = 'admin';
     const ROLE_CHEF  = 'chef';
@@ -22,11 +23,16 @@ class User extends Authenticatable
     ];
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role',
     ];
 
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    protected $searchableFields = [
+        'name',
+        'email',
     ];
 
     protected $appends = ['is_admin', 'is_chef'];

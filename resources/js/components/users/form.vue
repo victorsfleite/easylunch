@@ -16,8 +16,6 @@
             input-select(:form="form", field="role", label="Perfil", :options="userRoles", v-model="form.role", track-by="name", labeled-by="label", placeholder="Select a Role")
             input-text(:form="form", field="password", label="Senha", type="password" v-model="form.password")
             input-text(:form="form", field="password_confirmation", label="Confirmar Senha", type="password", v-model="form.password_confirmation")
-
-        pre {{ form }}
 </template>
 
 <script>

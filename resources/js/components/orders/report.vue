@@ -29,35 +29,41 @@
                         td.text-right TOTAL :
                         td {{ totalOrdersReport }}
                         td R$ {{ total.toFixed(2) }}
-        
+
         div(v-if="$user.is_admin")
             h3.mb-3 Relatório por Usuários
             .card
-                table.table.mb-0
+                table.table.table-hover.mb-0
                     thead
                         tr
                             th.border-top-0 Usuário
                             th.border-top-0 Nº de Pedidos
                             th.border-top-0 Total
                     tbody
-                        tr(v-for="user of users", :key="user.id")
+                        tr.cursor-pointer(v-for="user of users", :key="user.id", @click="showOrders(user.orders)")
                             td {{ user.name }}
-                            td {{ user.count_orders }}
+                            td {{ user.orders.length }}
                             td R$ {{ user.total_amount }}
                         tr.text-uppercase.font-weight-bold.text-success
                             td.text-right TOTAL :
                             td {{ totalOrdersUsersReport }}
                             td R$ {{ totalUsers }}
+
+            orders-list-modal(ref="ordersListModal", v-if="orders", :orders="orders", :date-range="reportRange")
 </template>
 
 <script>
 import moment from 'moment';
+import OrdersListModal from '@/components/orders/list-modal';
 
 export default {
+    components: { OrdersListModal },
+
     data() {
         return {
             reports: null,
             users: null,
+            orders: [],
             reportRange: {
                 start: moment()
                     .startOf('isoWeek')
@@ -84,10 +90,7 @@ export default {
         },
 
         totalUsers() {
-            return !this.users 
-                ? 0
-                : this.users
-                    .reduce((a, b) => a + b.total_amount, 0);
+            return !this.users ? 0 : this.users.reduce((a, b) => a + b.total_amount, 0);
         },
 
         totalOrdersReport() {
@@ -98,8 +101,8 @@ export default {
         },
 
         totalOrdersUsersReport() {
-            return this.users && this.users.reduce((a, b) => a + b.count_orders, 0);
-        }
+            return this.users && this.users.reduce((a, b) => a + b.orders.length, 0);
+        },
     },
 
     methods: {
@@ -109,14 +112,19 @@ export default {
         },
 
         async fetchUserReports() {
-            const { data: users } = await this.$axios.post(this.$route('reports.users'), { ...this.reportRange});
+            const { data: users } = await this.$axios.post(this.$route('reports.users'), { ...this.reportRange });
             this.users = users.data;
         },
 
         onChangeRange() {
             this.fetchReports();
             this.fetchUserReports();
-        }
+        },
+
+        showOrders(orders) {
+            this.orders = orders;
+            this.$refs.ordersListModal.open();
+        },
     },
 };
 </script>

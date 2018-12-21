@@ -2,7 +2,7 @@
     div
         .row.mb-0
             .col-md-4.mb-3
-                h3.mb-0 Novo Menu
+                h3.mb-0 {{ this.resource ? 'Editar Menu' : 'Novo Menu' }}
             .col-md-8.mb-3
                 .d-flex.align-items-center
                     a.btn.btn-default.ml-auto.mr-2(:href="$route('menus')") Voltar Pra Lista

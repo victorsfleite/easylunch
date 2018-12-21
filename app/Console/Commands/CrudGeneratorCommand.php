@@ -9,7 +9,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class CrudGeneratorCommand extends Command
 {
-    protected $signature = 'g:crud
+    protected $signature = 'crud:generate
         {model : Model name (singular). Example: User}
         {--y|yes : Yes to all interactive questions.}
         {fields* : Fields with its type. Example name:string active:boolean}';

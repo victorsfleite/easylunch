@@ -14,3 +14,5 @@ Vue.component('menu-show', require('./menus/show'));
 Vue.component('orders-index', require('./orders/index'));
 Vue.component('orders-form', require('./orders/form'));
 Vue.component('orders-report', require('./orders/report'));
+Vue.component('users-index', require('./users/index'));
+Vue.component('users-form', require('./users/form'));

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\IsAdmin;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,4 +40,12 @@ Route::middleware('auth')->group(function () {
     Route::get('menus/list', 'MenuController@list')->name('menus');
     Route::post('menus/bulk-destroy', 'MenuController@bulkDestroy')->name('menus.bulk-destroy');
     Route::resource('menus', 'MenuController');
+
+    Route::middleware('admin')->group(function () {
+        // Users
+        Route::get('/users/roles', 'Users\GetRolesController')->name('users.roles');
+        Route::get('users/index', 'UserController@list')->name('users');
+        Route::post('users/bulk-destroy', 'UserController@bulkDestroy')->name('users.bulk-destroy');
+        Route::resource('users', 'UserController');
+    });
 });

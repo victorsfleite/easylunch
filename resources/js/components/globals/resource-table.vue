@@ -97,7 +97,7 @@
                         td.align-middle
                             .actions
                                 slot(:row="resource", name="actions")
-                                    a.btn.btn-sm.bg-transparent(:href="resourceUrl(resource)")
+                                    a.btn.btn-sm.bg-transparent(:href="resourceUrl(resource)" v-if="canShow")
                                         i.far.fa-eye.text-black-50
                                     a.btn.btn-sm.bg-transparent(:href="editUrl(resource)" v-if="canEdit")
                                         i.far.fa-edit.text-black-50
@@ -278,9 +278,16 @@ export default {
         },
 
         /**
-         * Permission to delete operations
+         * Permission to edit operations
          */
         canEdit: {
+            default: true,
+        },
+
+        /**
+         * Permission to show operations
+         */
+        canShow: {
             default: true,
         },
     },

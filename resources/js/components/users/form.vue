@@ -13,10 +13,11 @@
         div
             input-text(:form="form", field="name", label="Nome", v-model="form.name")
             input-text(:form="form", field="email", type="email" label="Email", v-model="form.email")
-            input-text(:form="form", field="role", label="Perfil", v-model="form.role")
-            //- input-select(:form="form", field="role", label="Perfil", :options="userStatuses", v-model="form.role")
+            input-select(:form="form", field="role", label="Perfil", :options="userRoles", v-model="form.role", track-by="name", labeled-by="label", placeholder="Select a Role")
             input-text(:form="form", field="password", label="Senha", type="password" v-model="form.password")
             input-text(:form="form", field="password_confirmation", label="Confirmar Senha", type="password", v-model="form.password_confirmation")
+
+        pre {{ form }}
 </template>
 
 <script>
@@ -28,8 +29,13 @@ export default {
     data() {
         return {
             form: new Form(this.resource || {}, 'multipart'),
-            userStatuses: [{ name: 'jeremias' }, { name: 'jetete' }],
+            userRoles: [],
         };
+    },
+
+    async created() {
+        const { data: roles } = await this.$axios.get(this.$route('users.roles'));
+        this.userRoles = roles;
     },
 
     methods: {

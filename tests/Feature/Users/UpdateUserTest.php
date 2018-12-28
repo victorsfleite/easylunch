@@ -85,18 +85,18 @@ class UpdateUserTest extends TestCase
     }
 
     /** @test */
-    public function it_should_not_allow_a_non_admin_to_open_the_create_user_page()
+    public function it_should_not_allow_a_non_admin_to_open_the_edit_user_page()
     {
         $this->actingAs($this->chef())
-            ->getJson(route('users.create'))
+            ->getJson(route('users.edit', $this->createUser()->id))
             ->assertRedirect(Response::HTTP_NOT_FOUND);
 
         $this->actingAs($this->user())
-            ->getJson(route('users.create'))
+            ->getJson(route('users.edit', $this->createUser()->id))
             ->assertRedirect(Response::HTTP_NOT_FOUND);
 
         $this->actingAs($this->admin())
-            ->getJson(route('users.create'))
+            ->getJson(route('users.edit', $this->createUser()->id))
             ->assertSuccessful();
     }
 

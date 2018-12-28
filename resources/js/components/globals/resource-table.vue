@@ -15,7 +15,7 @@
                 .ml-auto.d-flex
                     //- ACTIONS
                     .d-flex(v-if="hasActions && selected.length")
-                        mt-select.mr-2(
+                        select-dropdown.mr-2(
                             button-class="btn-sm btn-default",
                             v-model="actionSelected",
                             track-by="name",

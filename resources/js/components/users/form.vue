@@ -13,7 +13,7 @@
         div
             input-text(:form="form", field="name", label="Nome", v-model="form.name")
             input-text(:form="form", field="email", type="email" label="Email", v-model="form.email")
-            input-select(:form="form", field="role", label="Perfil", :options="userRoles", v-model="form.role", track-by="value", placeholder="Select a Role")
+            input-select(:form="form", field="role", label="Perfil", :options="userRoles", v-model="form.role", track-by="value", placeholder="Selecione um Perfil")
             input-text(:form="form", field="password", label="Senha", type="password" v-model="form.password")
             input-text(:form="form", field="password_confirmation", label="Confirmar Senha", type="password", v-model="form.password_confirmation")
 </template>

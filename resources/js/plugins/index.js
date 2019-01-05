@@ -7,6 +7,11 @@ import Form from './form';
 import { loadProgressBar } from 'axios-progress-bar';
 import VCalendar from 'v-calendar';
 
+// Bootstrap Vue components
+import vBTooltip from 'bootstrap-vue/es/directives/tooltip/tooltip';
+
+Vue.directive('tooltip', vBTooltip);
+
 window.moment = moment;
 window.Form = Form;
 

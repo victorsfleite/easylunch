@@ -43,6 +43,9 @@
         "classmap": [
             "database/seeds",
             "database/factories"
+        ],
+        "files": [
+            "app/Support/helpers.php"
         ]
     },
     "autoload-dev": {
@@ -50,7 +53,8 @@
             "Tests\\": "tests/"
         },
         "files": [
-            "tests/Helpers/functions.php"
+            "tests/Helpers/functions.php",
+            "app/Support/helpers.php"
         ]
     },
     "minimum-stability": "dev",

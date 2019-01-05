@@ -136,8 +136,9 @@ return [
     */
     'attributes' => [
         'description' => 'descrição',
-        'name' => 'nome',
-        'role' => 'perfil',
-        'password' => 'senha',
+        'name'        => 'nome',
+        'role'        => 'perfil',
+        'password'    => 'senha',
+        'price'       => 'preço',
     ],
 ];

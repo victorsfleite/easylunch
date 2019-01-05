@@ -75,6 +75,20 @@ export default class {
         this.errors.clear();
     }
 
+    save(url, fieldName = null) {
+        const method = this.id ? 'put' : 'post';
+
+        return this.submit(method, this.getUrl(url), fieldName);
+    }
+
+    destroy(url, fieldName = null) {
+        return this.delete(this.getUrl(url), fieldName);
+    }
+
+    getUrl(url) {
+        return (url = this.id ? `${url}/${this.id}` : url);
+    }
+
     post(url, fieldName = null) {
         return this.submit('post', url, fieldName);
     }

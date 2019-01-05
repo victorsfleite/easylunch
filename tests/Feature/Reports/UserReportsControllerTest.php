@@ -5,14 +5,16 @@ namespace Tests\Feature\Reports;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\User;
+use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UserReportsControllerTest extends TestCase
 {
+    use DatabaseTransactions;
+
     public function dateRange(): array
     {
         return [
@@ -42,14 +44,17 @@ class UserReportsControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_the_total_amount_of_the_users_in_a_date_range()
+    public function it_returns_the_total_amount_per_user_in_a_date_range()
     {
-        $user1 = create(User::class);
-        $menu1 = create(Menu::class, ['date' => today()->toDateString()]);
+        $range = array_flatten($this->dateRange());
+        $now   = array_random(CarbonPeriod::createFromArray($range)->toArray());
+        Carbon::setTestNow($now);
+
+        $user1  = create(User::class);
+        $menu1  = create(Menu::class, ['date' => now()->toDateString()]);
         create(Order::class, ['owner_id' => $user1, 'menu_id'  => $menu1, 'completed_at' => now()]);
         create(Order::class, ['owner_id' => $user1, 'menu_id'  => $menu1, 'completed_at' => now()]);
         create(Order::class, ['owner_id' => $user1, 'menu_id'  => $menu1, 'completed_at' => null]);
-        $range = array_flatten($this->dateRange());
         $user1->refresh();
         $user1Orders = $user1->orders()->completed()->betweenDates($range)->get();
 
@@ -69,14 +74,4 @@ class UserReportsControllerTest extends TestCase
                 ]
             ]);
     }
-
-    /** @test */
-    // public function it_is_not_accessible_by_users()
-    // {
-    // }
-
-    // /** @test */
-    // public function it_is_not_accessible_by_chefs()
-    // {
-    // }
 }

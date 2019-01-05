@@ -3,6 +3,11 @@
         <div class="card-body px-3 pt-3 pb-0">
             <b>{{ order.owner && order.owner.name }}:</b>
             <span>{{ order.description }}</span>
+            <div class="d-flex flex-wrap">
+                <span class="badge badge-secondary mr-2" v-for="option of order.options" :key="option.id">
+                    {{ option.name }} - R$ {{ (+option.pivot.price).toFixed(2) }}
+                </span>
+            </div>
         </div>
 
         <div class="px-3 py-2">
@@ -17,6 +22,10 @@
             </span>
 
             <span class="text-black-50 fs-sm ml-3" v-if="showTimestamps">Criado {{ order.created_at | date('LLLL') }}</span>
+
+            <span class="text-black-50 fs-sm ml-3">
+                Preço: R$ {{ order.price.toFixed(2) }}
+            </span>
 
             <slot name="actions"></slot>
         </div>

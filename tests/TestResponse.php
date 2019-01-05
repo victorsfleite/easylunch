@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestResponse as BaseTestResponse;
+use Illuminate\Http\Response;
 
 class TestResponse extends BaseTestResponse
 {
@@ -12,5 +13,10 @@ class TestResponse extends BaseTestResponse
             ->assertJsonFragment([$message]);
 
         return $this;
+    }
+
+    public function assertBadRequest()
+    {
+        return $this->assertStatus(Response::HTTP_BAD_REQUEST);
     }
 }

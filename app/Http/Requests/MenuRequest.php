@@ -14,8 +14,10 @@ class MenuRequest extends FormRequest
     public function rules()
     {
         return [
-            'date'        => 'required',
-            'description' => 'required',
+            'date'                  => 'required',
+            'description'           => 'required',
+            'options'               => 'sometimes|required|array',
+            'options.*.pivot.price' => 'required_with:options|numeric'
         ];
     }
 }

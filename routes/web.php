@@ -41,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::post('menus/bulk-destroy', 'MenuController@bulkDestroy')->name('menus.bulk-destroy');
     Route::resource('menus', 'MenuController');
 
+    // Options
+    Route::apiResource('options', 'OptionController', ['except' => ['show']]);
+
     Route::middleware('admin')->group(function () {
         // Users
         Route::get('/users/roles', 'Users\GetRolesController')->name('users.roles');

@@ -6,7 +6,6 @@ use App\Traits\Models\Searchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
@@ -24,20 +23,29 @@ class Menu extends Model implements HasMedia
         'date'
     ];
 
-    protected $with = ['orders'];
+    protected $with = ['orders', 'options'];
+
+    protected $casts = [
+        'date'       => 'date:Y-m-d',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     protected $appends = ['image', 'income', 'income_preview'];
 
     public function registerMediaCollections()
     {
-        $this
-            ->addMediaCollection('image')
-            ->singleFile();
+        $this->addMediaCollection('image')->singleFile();
     }
 
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function options()
+    {
+        return $this->belongsToMany(Option::class, 'menu_options')->withTimestamps()->withPivot('price');
     }
 
     public function scopeCompleted(Builder $query)
@@ -56,16 +64,23 @@ class Menu extends Model implements HasMedia
 
     public function getIncomePreviewAttribute()
     {
-        return $this->calculateIncome($this->orders()->count());
+        return $this->orders->sum('price');
     }
 
     public function getIncomeAttribute()
     {
-        return $this->calculateIncome($this->orders()->completed()->count());
+        return $this->orders()->completed()->get()->sum('price');
     }
 
-    public function calculateIncome(int $ordersCount)
+    public function syncOptions(array $options)
     {
-        return 10 * $ordersCount;
+        $options = collect($options)->mapWithKeys(function ($option) {
+            $price = $option['pivot']['price'] ?? $option['price'];
+
+            return [$option['id'] => compact('price')];
+        });
+
+        $this->options()->sync($options);
+        $this->refresh();
     }
 }

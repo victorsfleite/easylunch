@@ -97,7 +97,7 @@ export default {
     data() {
         return {
             orders: (this.menu && this.menu.orders) || [],
-            order: { menu_id: this.menu.id },
+            order: { menu_id: this.menu && this.menu.id },
             completingIds: [],
             removingIds: [],
             interval: null,
@@ -138,10 +138,11 @@ export default {
     },
 
     created() {
-        console.log('menu', this.menu);
-        this.interval = setInterval(() => {
-            this.refresh();
-        }, 60000);
+        if (this.menu) {
+            this.interval = setInterval(() => {
+                this.refresh();
+            }, 60000);
+        }
     },
 
     destroy() {

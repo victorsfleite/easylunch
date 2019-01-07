@@ -12,7 +12,12 @@
         </template>
 
         <template v-if="innerMenu">
-            <h1 class="mb-0"> Menu de {{ innerMenu.date | date }} </h1>
+            <h1 class="mb-0"> Menu de {{ innerMenu.date | date }}
+                <a v-if="$user.is_chef || $user.is_admin" :href="$route('menus.edit', { menu: menu.id })" class="btn btn-sm btn-default">
+                    <i class="fas fa-pencil-alt"></i>
+                    Editar
+                </a>
+            </h1>
             <h6 class="subtitle text-muted mb-5"> Pedidos encerram exatamente às {{ timeLimit | date('HH:mm') }} </h6>
 
             <div class="row" v-if="innerMenu">
@@ -38,7 +43,8 @@
 
                     <div class="card border-0 shadow-sm mb-5" v-if="showOrderForm">
                         <div class="card-body">
-                            <orders-form :resource="order" @saved="savedOrder" @canceled="showOrderForm = false"></orders-form>
+                            <orders-form :resource="order" @saved="savedOrder" @canceled="showOrderForm = false"
+                                :options="menu.options"></orders-form>
                         </div>
                     </div>
 
@@ -91,7 +97,7 @@ export default {
     data() {
         return {
             orders: (this.menu && this.menu.orders) || [],
-            order: { menu_id: this.menu.id },
+            order: { menu_id: this.menu && this.menu.id },
             completingIds: [],
             removingIds: [],
             interval: null,
@@ -132,10 +138,11 @@ export default {
     },
 
     created() {
-        console.log('menu', this.menu);
-        this.interval = setInterval(() => {
-            this.refresh();
-        }, 60000);
+        if (this.menu) {
+            this.interval = setInterval(() => {
+                this.refresh();
+            }, 60000);
+        }
     },
 
     destroy() {

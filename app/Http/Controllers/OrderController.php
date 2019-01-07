@@ -9,6 +9,7 @@ use App\Models\Menu;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderController extends Controller
@@ -41,11 +42,13 @@ class OrderController extends Controller
 
     public function store(OrderRequest $request, Menu $menu)
     {
-        return DataResource::make(
-            $menu->orders()->create(array_merge($request->validated(), [
-                'owner_id' => $this->currentUser()->id,
-            ]))
-        );
+        return DB::transaction(function () use ($request, $menu) {
+            $order = user()->orders()->create(array_merge($request->validated(), [
+                'menu_id' => $menu->id,
+            ]));
+
+            return DataResource::make($order->syncOptions($request->options));
+        });
     }
 
     public function show(Order $order)
@@ -56,10 +59,13 @@ class OrderController extends Controller
     public function update(OrderRequest $request, Menu $menu, Order $order)
     {
         abort_if(!$this->currentUser()->createdOrder($order), Response::HTTP_FORBIDDEN);
+        abort_if($order->completed_at, Response::HTTP_BAD_REQUEST);
 
-        $order->update($request->validated());
+        return DB::transaction(function () use ($request, $order) {
+            $order->update($request->validated());
 
-        return DataResource::make($order);
+            return DataResource::make($order->syncOptions($request->options ?? []));
+        });
     }
 
     public function destroy(Menu $menu, Order $order)

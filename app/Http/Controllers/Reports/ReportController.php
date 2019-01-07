@@ -19,10 +19,12 @@ class ReportController extends Controller
         return Menu::with('orders')
             ->completed()
             ->where('date', '>=', $start->toDateString())
-            ->where('date', '<=', $end->addDay()->toDateString())
+            ->where('date', '<=', $end->toDateString())
             ->orderBy('date')
             ->get()
-            ->groupBy('date')
+            ->groupBy(function ($menu) {
+                return $menu->date->toDateString();
+            })
             ->map(function ($report, $date) {
                 return [
                     'count_orders' => $report->reduce(function ($carry, $menu) {

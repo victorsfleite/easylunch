@@ -20,7 +20,7 @@ class UserReportsController extends Controller
                 'id'           => $user->id,
                 'name'         => $user->name,
                 'orders'       => $orders,
-                'total_amount' => $orders->count() * 10,
+                'total_amount' => $orders->sum('price'),
             ];
         })->filter(function ($user) {
             return $user['orders']->count() > 0;

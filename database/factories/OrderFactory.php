@@ -14,8 +14,10 @@ $factory->define(Order::class, function (Faker $faker) {
         'owner_id'    => function () {
             return create(User::class)->id;
         },
-        'menu_id'      => $menu->id,
+        'menu_id' => function () use ($menu) {
+            return $menu->id;
+        },
         'completed_at' => $completedAt,
-        'created_at'   => $completedAt ?? $menu->date,
+        'created_at'   => $menu->date,
     ];
 });

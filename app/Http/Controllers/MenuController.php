@@ -39,9 +39,13 @@ class MenuController extends Controller
     {
         $menu = Menu::create($request->validated());
 
+        if ($request->options) {
+            $menu->syncOptions($request->options);
+        }
+
         $this->addMediaIfExists($menu, 'new_image', 'image');
 
-        $this->currentUser()->notify(new MenuCreated);
+        user()->notify(new MenuCreated);
 
         return DataResource::make($menu);
     }
@@ -58,6 +62,10 @@ class MenuController extends Controller
         $menu->update($request->validated());
 
         $this->addMediaIfExists($menu, 'new_image', 'image');
+
+        if ($request->options) {
+            $menu->syncOptions($request->options);
+        }
 
         return DataResource::make($menu);
     }

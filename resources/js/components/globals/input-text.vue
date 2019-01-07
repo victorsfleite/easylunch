@@ -9,6 +9,7 @@
 
             <input :type="type" class="form-control"
                    :value="value"
+                   :step="step"
                    @input="$emit('input', $event.target.value)"
                    :placeholder="placeholder"
                    :class="{ [inputClass]: inputClass, 'is-invalid': form && form.errors.has(field) }"
@@ -24,6 +25,7 @@
         <input v-else
                :type="type" class="form-control"
                :min="min"
+               :step="step"
                :value="value"
                @input="$emit('input', $event.target.value)"
                :placeholder="placeholder"
@@ -72,6 +74,7 @@ export default {
         form: { default: null },
         field: { default: null },
         value: { default: null },
+        step: { default: null },
         disabled: { default: false },
         readonly: { default: false },
         group: { default: false },

@@ -13,3 +13,4 @@ Vue.component('select-file', require('./select-file'));
 Vue.component('resource-table', require('./resource-table'));
 Vue.component('empty', require('./empty'));
 Vue.component('select-dropdown', require('./select-dropdown'));
+Vue.component('loading', require('./loading'));

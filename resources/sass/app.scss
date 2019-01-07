@@ -44,3 +44,17 @@
 .cursor-pointer {
     cursor: pointer;
 }
+
+.border-transparent {
+    border-color: transparent;
+}
+.border-white {
+    border-color: white;
+}
+.border-primary {
+    border-color: $primary;
+}
+
+.opacity-50 {
+    opacity: 0.5 !important;
+}

@@ -6,6 +6,8 @@ use App\Traits\Models\Searchable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
@@ -22,7 +24,7 @@ class Order extends Model
         'description',
     ];
 
-    protected $with = ['owner'];
+    protected $with = ['owner', 'options'];
 
     protected $dates = [
         'updated_at',
@@ -30,14 +32,21 @@ class Order extends Model
         'completed_at',
     ];
 
-    public function menu()
+    protected $appends = ['price'];
+
+    public function menu(): BelongsTo
     {
         return $this->belongsTo(Menu::class);
     }
 
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function options(): BelongsToMany
+    {
+        return $this->belongsToMany(Option::class, 'order_options')->withTimestamps()->withPivot('price');
     }
 
     public function scopeCompleted(Builder $query)
@@ -53,5 +62,28 @@ class Order extends Model
             $menu->where('date', '>=', $start->toDateString())
                 ->where('date', '<=', $end->toDateString());
         });
+    }
+
+    public function syncOptions(? array $options): self
+    {
+        $optionsToSync = collect($options)->mapWithKeys(function ($option) {
+            return [$option['id'] => ['price' => array_get($option, 'pivot.price')]];
+        });
+
+        $this->options()->sync($optionsToSync);
+        $this->refresh();
+
+        return $this;
+    }
+
+    public function getPriceAttribute()
+    {
+        $basePrice      = 10;
+        $priceOfOptions = 0;
+        if (!is_null($this->options)) {
+            $priceOfOptions = $this->options->map->pivot->sum('price');
+        }
+
+        return $basePrice + $priceOfOptions;
     }
 }

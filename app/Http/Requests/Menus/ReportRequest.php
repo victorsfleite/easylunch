@@ -8,7 +8,7 @@ class ReportRequest extends FormRequest
 {
     public function authorize()
     {
-        return $this->user()->is_admin || $this->user()->is_chef;
+        return true;
     }
 
     public function rules()

@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Middleware\IsAdmin;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,9 +16,10 @@ Route::redirect('/', '/home');
 Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
-Route::get('today', 'Menus\MenuOfTheDayController')->name('menus.today');
 
 Route::middleware('auth')->group(function () {
+    Route::get('today', 'Menus\MenuOfTheDayController')->name('menus.today');
+
     // Users
     Route::view('/users/account', 'users.account')->name('users.account');
     Route::put('/users/{user}/profile-update', 'Users\UpdateProfileController')->name('users.profile-update');
@@ -40,6 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::get('menus/list', 'MenuController@list')->name('menus');
     Route::post('menus/bulk-destroy', 'MenuController@bulkDestroy')->name('menus.bulk-destroy');
     Route::resource('menus', 'MenuController');
+
+    // Options
+    Route::apiResource('options', 'OptionController', ['except' => ['show']]);
 
     Route::middleware('admin')->group(function () {
         // Users

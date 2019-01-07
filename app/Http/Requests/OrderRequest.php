@@ -14,7 +14,9 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'description'  => 'required',
+            'description'           => 'required',
+            'options'               => 'sometimes|nullable|array',
+            'options.*.pivot.price' => 'sometimes|numeric|min:0',
         ];
     }
 }

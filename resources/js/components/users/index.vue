@@ -27,6 +27,13 @@
             <template slot="role" slot-scope="{ row: user }">
                 <h5><span class="badge" :class="'badge-'+roleBadge(user.role)">{{ user.role | capitalize }}</span></h5>
             </template>
+
+            <template slot="more-actions" slot-scope="{ resource: user }">
+                <a :href="$route('users.impersonate', { user: user.id })" class="btn btn-sm bg-transparent text-black-50"
+                    v-tooltip="{title: 'Personificar Usuário', boundary: 'window'}">
+                    <i class="fa fa-user-secret"></i>
+                </a>
+            </template>
         </resource-table>
     </div>
 </template>

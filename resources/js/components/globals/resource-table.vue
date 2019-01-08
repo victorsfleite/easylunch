@@ -15,7 +15,7 @@
                 .ml-auto.d-flex
                     //- ACTIONS
                     .d-flex(v-if="hasActions && selected.length")
-                        select-dropdown.mr-2(
+                        mt-select.mr-2(
                             button-class="btn-sm btn-default",
                             v-model="actionSelected",
                             track-by="name",
@@ -96,6 +96,7 @@
                                     :src="objGet(resource, column)")
                         td.align-middle
                             .actions
+                                slot(:resource="resource", name="more-actions")
                                 slot(:row="resource", name="actions")
                                     a.btn.btn-sm.bg-transparent(:href="resourceUrl(resource)" v-if="canShow")
                                         i.far.fa-eye.text-black-50

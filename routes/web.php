@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::view('/users/account', 'users.account')->name('users.account');
     Route::put('/users/{user}/profile-update', 'Users\UpdateProfileController')->name('users.profile-update');
     Route::put('/users/{user}/password-update', 'Users\UpdatePasswordController')->name('users.password-update');
+    Route::get('users/stop-impersonating', 'Users\ImpersonationController@stopImpersonating')
+        ->name('users.stop-impersonating');
 
     // Orders
     Route::get('menus/{menu}/orders/index', 'OrderController@list')->name('orders');
@@ -48,6 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/roles', 'Users\GetRolesController')->name('users.roles');
         Route::get('users/index', 'UserController@list')->name('users');
         Route::post('users/bulk-destroy', 'UserController@bulkDestroy')->name('users.bulk-destroy');
+        Route::get('users/{user}/impersonate', 'Users\ImpersonationController@impersonate')->name('users.impersonate');
         Route::resource('users', 'UserController');
     });
 });

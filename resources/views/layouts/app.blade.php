@@ -56,6 +56,17 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @if (session('admin:impersonator'))
+                                        <h6 class="dropdown-header">{{__('Personificação')}}</h6>
+
+                                        <!-- Stop Impersonating -->
+                                        <a class="dropdown-item" href="{{ route('users.stop-impersonating') }}">
+                                            <i class="fa fa-fw text-left fa-btn fa-user-secret"></i> {{__('Voltar À Minha Conta')}}
+                                        </a>
+
+                                        <div class="dropdown-divider"></div>
+                                    @endif
+
                                     <a class="dropdown-item" href="{{ route('users.account') }}">
                                         <i class="fas fa-user-circle mr-2"></i>
                                         {{ __('Minha Conta') }}

@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use Searchable, Notifiable;
+    use HasMediaTrait, Searchable, Notifiable;
 
     const ROLE_ADMIN = 'admin';
     const ROLE_CHEF  = 'chef';
@@ -35,7 +39,7 @@ class User extends Authenticatable
         'email',
     ];
 
-    protected $appends = ['is_admin', 'is_chef'];
+    protected $appends = ['is_admin', 'is_chef', 'photo_url'];
 
     public function setPasswordAttribute($password)
     {
@@ -57,6 +61,36 @@ class User extends Authenticatable
     public function createdOrder(Order $order): bool
     {
         return $order->owner_id === $this->id;
+    }
+
+    public function registerMediaCollections()
+    {
+        $this->addMediaCollection('photo')->singleFile();
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->addMediaConversion('thumb')
+            ->fit(Manipulations::FIT_CROP, 512, 512)
+            ->nonQueued()
+            ->performOnCollections('photo');
+    }
+
+    public function getPhotoAttribute()
+    {
+        if (!$this->hasMedia('photo')) {
+            return null;
+        }
+
+        return (object) [
+            'original' => $this->getFirstMedia('photo')->getFullUrl(),
+            'thumb'    => $this->getFirstMedia('photo')->getFullUrl('thumb')
+        ];
+    }
+
+    public function getPhotoUrlAttribute()
+    {
+        return optional($this->photo)->thumb;
     }
 
     public function getIsChefAttribute()

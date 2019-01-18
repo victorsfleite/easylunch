@@ -55,9 +55,7 @@ export default {
 
     methods: {
         async updatePassword() {
-            const { data: updated } = await this.passwordForm.put(
-                this.$route('users.password-update', { user: this.user.id })
-            );
+            const { data: updated } = await this.passwordForm.put(this.$route('users.password-update', { user: this.user.id }));
 
             this.passwordForm.reset();
             this.$toasted.success('Senha alterada com sucesso!');

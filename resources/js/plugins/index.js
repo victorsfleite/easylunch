@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 import Form from './form';
 import { loadProgressBar } from 'axios-progress-bar';
 import VCalendar from 'v-calendar';
+import VueAvatar from 'vue-avatar';
 
 // Bootstrap Vue components
 import vBTooltip from 'bootstrap-vue/es/directives/tooltip/tooltip';
@@ -30,3 +31,4 @@ Vue.use(Toasted, {
 });
 
 Vue.use(VCalendar, { locale: 'pt_BR', firstDayOfWeek: 1 });
+Vue.component('avatar', VueAvatar);

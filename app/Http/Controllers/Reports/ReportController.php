@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Reports;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Menus\ReportRequest;
-use App\Http\Resources\DataResource;
 use App\Models\Menu;
-use App\Models\Order;
 use Carbon\Carbon;
 
 class ReportController extends Controller
@@ -26,11 +24,14 @@ class ReportController extends Controller
                 return $menu->date->toDateString();
             })
             ->map(function ($report, $date) {
+                $orders = $report->reduce(function ($carry, $menu) {
+                    return $carry->merge($menu->orders()->completed()->get());
+                }, collect([]));
+
                 return [
-                    'count_orders' => $report->reduce(function ($carry, $menu) {
-                        return $carry + $menu->orders()->completed()->count();
-                    }),
-                    'total' => $report->reduce(function ($total, $menu) {
+                    'orders'       => $orders->toArray(),
+                    'count_orders' => $orders->count(),
+                    'total'        => $report->reduce(function ($total, $menu) {
                         return $total + $menu->income;
                     }),
                 ];

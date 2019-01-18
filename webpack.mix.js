@@ -14,6 +14,7 @@ const path = require('path');
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
+    .sourceMaps()
     .webpackConfig({
         resolve: {
             alias: {
@@ -24,7 +25,6 @@ mix.js('resources/js/app.js', 'public/js')
             },
         },
     });
-
 
 if (mix.inProduction()) {
     mix.version();

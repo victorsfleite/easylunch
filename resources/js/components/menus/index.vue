@@ -36,7 +36,7 @@
             </template>
 
             <template slot="income" slot-scope="{ row: menu }">
-                <div style="width: 80px">R$ {{ menu.income }},00</div>
+                <div style="width: 80px">R$ {{ menu.income.toFixed(2) }}</div>
             </template>
 
             <template slot="empty-table">

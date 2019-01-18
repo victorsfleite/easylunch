@@ -20,7 +20,7 @@
                                 th.border-top-0 Nº de Pedidos
                                 th.border-top-0 Total
                         tbody
-                            tr(v-for="(report, date) of reports", :key="report.id", @click="showDayOrders(report, date)")
+                            tr.cursor-pointer(v-for="(report, date) of reports", :key="report.id", @click="showDayOrders(report, date)")
                                 td {{ date | date }}
                                 td {{ report.count_orders }}
                                 td R$ {{ report.total.toFixed(2) }}
@@ -42,11 +42,11 @@
                                 tr.cursor-pointer(v-for="user of users", :key="user.id", @click="showOrders(user.orders)")
                                     td {{ user.name }}
                                     td {{ user.orders.length }}
-                                    td R$ {{ user.total_amount }}
+                                    td R$ {{ user.total_amount.toFixed(2) }}
                                 tr.text-uppercase.font-weight-bold.text-success
                                     td.text-right TOTAL :
                                     td {{ totalOrdersUsersReport }}
-                                    td R$ {{ totalUsers }}
+                                    td R$ {{ totalUsers.toFixed(2) }}
 
         orders-list-modal(ref="ordersListModal", v-if="orders", :orders="orders", :date-range="reportRange")
             span(v-if="day") Pedidos do dia {{ day | date('DD/MM/YYYY') }}

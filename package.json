@@ -23,6 +23,7 @@
         "vue-toasted": "^1.1.25"
     },
     "dependencies": {
+        "@elitedevsquad/ui": "^0.0.9",
         "axios-progress-bar": "^1.2.0",
         "bootstrap-vue": "^2.0.0-rc.11",
         "v-calendar": "^0.9.7",

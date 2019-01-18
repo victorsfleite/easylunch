@@ -2,6 +2,15 @@
 # yarn lockfile v1
 
 
+"@elitedevsquad/ui@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@elitedevsquad/ui/-/ui-0.0.9.tgz#a084dd420a4a21b14d04ac37d68818eb0c40c877"
+  integrity sha512-hVKbTwX3al/cFMAm8GNM/rikPxpP3tYV9Ec4uWjIzQ1qTvOHyky7QtiK/kbR1wNjmxD8dKh5Xb6qTLSSnp3u8g==
+  dependencies:
+    axios "^0.18.0"
+    moment "^2.22.2"
+    vue "^2.5.17"
+
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@types/babel-types/-/babel-types-7.0.4.tgz#bfd5b0d0d1ba13e351dff65b6e52783b816826c8"

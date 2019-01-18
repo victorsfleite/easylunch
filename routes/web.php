@@ -52,5 +52,8 @@ Route::middleware('auth')->group(function () {
         Route::post('users/bulk-destroy', 'UserController@bulkDestroy')->name('users.bulk-destroy');
         Route::get('users/{user}/impersonate', 'Users\ImpersonationController@impersonate')->name('users.impersonate');
         Route::resource('users', 'UserController');
+
+        // Orders Operations
+        Route::put('orders/{order}/mark-paid', 'Orders\MarkPaidController')->name('orders.mark-paid');
     });
 });

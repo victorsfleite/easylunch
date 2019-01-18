@@ -1,6 +1,8 @@
 <template>
     <modal ref="modal" size="lg" body-classes="bg-light rounded-bottom" :has-footer="false">
-        <span slot="title">Pedidos entre {{ dateRange.start | date('DD/MM/YYYY') }} e {{ dateRange.end | date('DD/MM/YYYY') }}</span>
+        <span slot="title">
+            <slot> Pedidos entre {{ dateRange.start | date('DD/MM/YYYY') }} e {{ dateRange.end | date('DD/MM/YYYY') }} </slot>
+        </span>
         <order-card v-for="order of orders" :key="order.id" :order="order" :show-timestamps="true"></order-card>
     </modal>
 </template>

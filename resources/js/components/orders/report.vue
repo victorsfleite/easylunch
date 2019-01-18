@@ -1,26 +1,27 @@
 <template lang="pug">
     div
         .row
+            .form-group.col-md-6
+                label.form-label Selecione Período
+                v-date-picker(mode="range", v-model="reportRange", @input="onChangeRange")
+                    input.form-control(
+                        slot-scope="props"
+                        :value="props.inputValue"
+                        placeholder="Teste"
+                        @change="props.updateValue($event.target.value)")
+        .row.mt-3
             .col
                 h3.mb-3 Relatório de Pedidos
-                .form-group
-                    v-date-picker(mode="range", v-model="reportRange", @input="onChangeRange")
-                        input.form-control(
-                            slot-scope="props"
-                            :value="props.inputValue"
-                            placeholder="Teste"
-                            @change="props.updateValue($event.target.value)")
                 .card.mb-5
-                    table.table.mb-0
+                    table.table.table-hover.mb-0
                         thead
                             tr
                                 th.border-top-0 Dia
                                 th.border-top-0 Nº de Pedidos
                                 th.border-top-0 Total
                         tbody
-                            tr(v-for="(report, date) of reports", :key="report.id")
-                                td
-                                    a(:href="$route('menus', { date })") {{ date | date }}
+                            tr(v-for="(report, date) of reports", :key="report.id", @click="showDayOrders(report, date)")
+                                td {{ date | date }}
                                 td {{ report.count_orders }}
                                 td R$ {{ report.total.toFixed(2) }}
                             tr.text-uppercase.font-weight-bold.text-success
@@ -48,6 +49,7 @@
                                     td R$ {{ totalUsers }}
 
         orders-list-modal(ref="ordersListModal", v-if="orders", :orders="orders", :date-range="reportRange")
+            span(v-if="day") Pedidos do dia {{ day | date('DD/MM/YYYY') }}
 </template>
 
 <script>
@@ -71,6 +73,7 @@ export default {
                     .subtract(2, 'days')
                     .toDate(),
             },
+            day: null,
         };
     },
 
@@ -121,6 +124,13 @@ export default {
 
         showOrders(orders) {
             this.orders = orders;
+            this.day = null;
+            this.$refs.ordersListModal.open();
+        },
+
+        showDayOrders(report, date) {
+            this.orders = report.orders;
+            this.day = date;
             this.$refs.ordersListModal.open();
         },
     },

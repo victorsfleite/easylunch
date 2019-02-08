@@ -51,7 +51,10 @@
                             </li>
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link d-flex align-items-center py-0 dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <div class="mr-2">
+                                        <avatar :src="$user.photo_url" username="{{ user()->name }}" color="white" :size="35"></avatar>
+                                    </div>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 

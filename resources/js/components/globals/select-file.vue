@@ -76,7 +76,7 @@ export default {
         accept: { default: '*' },
         icon: { default: 'fa fa-3x fa-file' },
         rounded: { default: true },
-        circled: { default: false },
+        circled: { default: false, type: Boolean },
         iconMap: {
             default: () => ({
                 pdf: 'fa fa-3x fa-file-pdf',

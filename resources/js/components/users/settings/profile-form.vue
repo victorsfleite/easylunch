@@ -8,6 +8,17 @@
 
             <div>
                 <div class="form-group row">
+                    <div class="mx-auto mb-3">
+                        <select-file accept="image/*" icon="fas fa-3x fa-camera" circled
+                            @change="profileForm.new_photo = $event"
+                            :image="profileForm.photo_url"
+                            :error="profileForm.errors.get('new_photo')"
+                            @updateProfile:error="profileForm.errors.clear('new_photo')">
+                        </select-file>
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <label class="col-md-3 col-form-label text-md-right"> Nome </label>
                     <div class="col-md-6">
                         <input-text class="mb-0" v-model="profileForm.name" :form="profileForm" field="name" />
@@ -42,18 +53,17 @@ export default {
 
     data() {
         return {
-            profileForm: new Form(this.user),
+            profileForm: new Form(this.user, 'multipart'),
         };
     },
 
     methods: {
         async updateProfile() {
-            const { data: updated } = await this.profileForm.put(
-                this.$route('users.profile-update', { user: this.user.id })
-            );
+            const { data: updated } = await this.profileForm.put(this.$route('users.profile-update', { user: this.user.id }));
 
             this.profileForm = new Form(updated);
             this.$toasted.success('Perfil atualizado com sucesso!');
+            window.location.reload();
         },
     },
 };

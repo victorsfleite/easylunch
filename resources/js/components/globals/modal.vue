@@ -1,15 +1,26 @@
 <template>
     <div class="modal" :class="effect">
-        <div class="modal-dialog" :class="{'modal-dialog-centered': centered, ['modal-' + size]: true}">
+        <div
+            class="modal-dialog"
+            :class="{'modal-dialog-centered': centered, ['modal-' + size]: true}"
+        >
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">
+                    <h5 class="modal-title w-100">
                         <slot name="title">Modal title</slot>
                     </h5>
 
-                    <small><slot name="subtitle"></slot></small>
-
-                    <button class="close" type="button" @click="close" data-dismiss="modal" aria-label="Close">
+                    <small>
+                        <slot name="subtitle"></slot>
+                    </small>
+                    
+                    <button
+                        class="close"
+                        type="button"
+                        @click="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                    >
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -19,7 +30,10 @@
                 </div>
 
                 <div class="modal-footer" v-if="hasFooter">
-                    <slot name="footer"><button class="btn btn-default" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save changes</button></slot>
+                    <slot name="footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="button">Save changes</button>
+                    </slot>
                 </div>
             </div>
         </div>

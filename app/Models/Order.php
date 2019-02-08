@@ -18,6 +18,7 @@ class Order extends Model
         'owner_id',
         'menu_id',
         'completed_at',
+        'paid_at',
     ];
 
     protected $searchableFields = [
@@ -30,6 +31,7 @@ class Order extends Model
         'updated_at',
         'created_at',
         'completed_at',
+        'paid_at',
     ];
 
     protected $appends = ['price'];

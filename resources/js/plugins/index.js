@@ -3,7 +3,6 @@ import Laroute from './laroute';
 import axios from 'axios';
 import Toasted from 'vue-toasted';
 import moment from 'moment-timezone';
-import Form from './form';
 import { loadProgressBar } from 'axios-progress-bar';
 import VCalendar from 'v-calendar';
 import VueAvatar from 'vue-avatar';
@@ -11,7 +10,11 @@ import VueAvatar from 'vue-avatar';
 // Bootstrap Vue components
 import vBTooltip from 'bootstrap-vue/es/directives/tooltip/tooltip';
 
+// DevSquad
+import DevsquadUi, { Form } from '@elitedevsquad/ui';
+
 Vue.directive('tooltip', vBTooltip);
+Vue.use(DevsquadUi);
 
 window.moment = moment;
 window.Form = Form;

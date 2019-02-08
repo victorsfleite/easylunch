@@ -4,9 +4,7 @@ namespace Tests\Feature\Users;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
@@ -44,7 +42,7 @@ class UpdateUserTest extends TestCase
         return $this->putJson(
             route('users.update', ['user' => $this->createUser()->id]),
             array_merge($user->toArray(), [
-                'password' => $password,
+                'password'              => $password,
                 'password_confirmation' => $password_confirmation ?? $password,
             ])
         );
@@ -75,11 +73,11 @@ class UpdateUserTest extends TestCase
     {
         $this->actingAs($this->chef())
             ->updateUser()
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->actingAs($this->user())
             ->updateUser()
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->assertDatabaseMissing('users', $this->fakeUser()->only('id', 'name', 'email', 'role', 'password'));
     }
@@ -89,11 +87,11 @@ class UpdateUserTest extends TestCase
     {
         $this->actingAs($this->chef())
             ->getJson(route('users.edit', $this->createUser()->id))
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->actingAs($this->user())
             ->getJson(route('users.edit', $this->createUser()->id))
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->actingAs($this->admin())
             ->getJson(route('users.edit', $this->createUser()->id))

@@ -4,9 +4,7 @@ namespace Tests\Feature\Users;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
@@ -55,11 +53,11 @@ class StoreUserTest extends TestCase
 
         $this->actingAs($this->chef())
             ->storeUser($newUser)
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->actingAs($this->user())
             ->storeUser($newUser)
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->assertDatabaseMissing('users', $newUser->only('email'));
     }
@@ -69,11 +67,11 @@ class StoreUserTest extends TestCase
     {
         $this->actingAs($this->chef())
             ->getJson(route('users.create'))
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->actingAs($this->user())
             ->getJson(route('users.create'))
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->actingAs($this->admin())
             ->getJson(route('users.create'))

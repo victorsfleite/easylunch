@@ -140,5 +140,7 @@ return [
         'role'        => 'perfil',
         'password'    => 'senha',
         'price'       => 'preço',
+        'paid_at'     => 'pago em',
+        'paid'        => 'pago',
     ],
 ];

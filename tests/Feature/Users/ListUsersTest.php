@@ -4,9 +4,7 @@ namespace Tests\Feature\Users;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
@@ -40,11 +38,11 @@ class ListUsersTest extends TestCase
     {
         $this->actingAs($this->chef())
             ->listUsers()
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->actingAs($this->user())
             ->listUsers()
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->assertForbidden();
 
         $this->actingAs($this->admin())
             ->listUsers()
@@ -65,7 +63,7 @@ class ListUsersTest extends TestCase
     {
         create(User::class, [], 3);
         $user = create(User::class, ['name' => 'Some Name']);
-        $uri = route('users.index', ['search' => 'name']);
+        $uri  = route('users.index', ['search' => 'name']);
 
         $data = $this->actingAs($this->admin())
             ->getJson($uri)
@@ -80,7 +78,7 @@ class ListUsersTest extends TestCase
     {
         create(User::class, [], 3);
         $user = create(User::class, ['email' => 'some.email@test.com']);
-        $uri = route('users.index', ['search' => 'some.email']);
+        $uri  = route('users.index', ['search' => 'some.email']);
 
         $data = $this->actingAs($this->admin())
             ->getJson($uri)

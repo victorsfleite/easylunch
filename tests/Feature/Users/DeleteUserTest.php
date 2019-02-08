@@ -2,69 +2,53 @@
 
 namespace Tests\Feature\Users;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\Response;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Http\Response;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DeleteUserTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $user;
-
-    protected function setUp()
+    private function deleteUser(User $user) : TestResponse
     {
-        parent::setUp();
-
-        $this->user = $this->createUser();
-    }
-
-    private function createUser()
-    {
-        return create(User::class);
-    }
-
-    private function deleteUser(User $user = null) : TestResponse
-    {
-        $user = $user ?? $this->user;
-        $url = route('users.destroy', ['user' => $user->id]);
-
-        return $this->deleteJson($url);
+        return $this->deleteJson(route('users.destroy', ['user' => $user->id]));
     }
 
     /** @test */
     public function it_should_delete_a_user()
     {
         $this->actingAs($this->admin())
-            ->deleteUser()
+            ->deleteUser(create(User::class))
             ->assertSuccessful();
     }
 
     /** @test */
     public function a_non_admin_user_cannot_delete_a_user()
     {
+        $user = create(User::class);
+
         $this->actingAs($this->chef())
-            ->deleteUser()
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->deleteUser($user)
+            ->assertForbidden();
 
         $this->actingAs($this->user())
-            ->deleteUser()
-            ->assertRedirect(Response::HTTP_NOT_FOUND);
+            ->deleteUser($user)
+            ->assertForbidden();
 
-        $this->assertDatabaseHas('users', $this->user->only('id', 'name', 'email', 'role', 'password'));
+        $this->assertDatabaseHas('users', $user->only('id', 'name', 'email', 'role', 'password'));
     }
 
     /** @test */
     public function a_guest_cannot_delete_a_user()
     {
+        $user = create(User::class);
         $this->assertGuest()
-            ->deleteUser()
+            ->deleteUser($user)
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
 
-        $this->assertDatabaseHas('users', $this->user->only('id', 'name', 'email', 'role', 'password'));
+        $this->assertDatabaseHas('users', $user->only('id', 'name', 'email', 'role', 'password'));
     }
 }

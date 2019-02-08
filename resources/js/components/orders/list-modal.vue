@@ -1,16 +1,29 @@
 <template>
     <modal ref="modal" size="lg" body-classes="bg-light rounded-bottom" :has-footer="false">
-        <span slot="title">
-            <slot> Pedidos entre {{ dateRange.start | date('DD/MM/YYYY') }} e {{ dateRange.end | date('DD/MM/YYYY') }} </slot>
-        </span>
+        <div class="d-flex align-items-center" slot="title">
+            <slot>
+                Pedidos entre {{ dateRange.start | date('DD/MM/YYYY') }} e {{ dateRange.end | date('DD/MM/YYYY') }}
+                <button-loading
+                    class="btn btn-sm btn-primary ml-auto"
+                    @click="markAllAsPaid"
+                    :loading="manyForm.submitting"
+                >
+                    <i class="fa fa-check"></i>
+                    Marcar todos pagos
+                </button-loading>
+            </slot>
+        </div>
+
         <order-card v-for="order of orders" :key="order.id" :order="order" :show-timestamps="true">
             <div slot="actions" class="float-right" v-if="$user.is_admin">
-                <button-loading class="btn btn-sm"
+                <button-loading
+                    class="btn btn-sm"
                     :class="paidStatusClassesFor(order)"
                     @click="togglePaid(order)"
                     @mouseover.native="hover(order)"
                     @mouseleave.native="unhover(order)"
-                    :loading="isMarking(order)">
+                    :loading="isMarking(order)"
+                >
                     <i class="fa fa-fw" :class="paidStatusIconFor(order)" v-if="!isMarking(order)"></i>
                     {{ paidStatusLabelFor(order) }}
                 </button-loading>
@@ -37,6 +50,10 @@ export default {
         return {
             payingOrders: [],
             hoveringOrders: [],
+            manyForm: new Form({
+                ids: [],
+                paid: false,
+            }),
         };
     },
 
@@ -54,6 +71,15 @@ export default {
             } finally {
                 this.payingOrders.splice(this.payingOrders.indexOf(order.id), 1);
             }
+        },
+
+        async markAllAsPaid() {
+            this.manyForm.ids = this.orders.map(order => order.id);
+            this.manyForm.paid = true;
+
+            const response = await this.manyForm.put(this.$route('orders.mark-paid-many'));
+            this.$emit('updated');
+            this.orders.forEach(order => (order.paid_at = moment().format('YYYY-MM-DD HH:mm:ss')));
         },
 
         isMarking(order) {

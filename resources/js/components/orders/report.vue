@@ -3,7 +3,7 @@
         .row
             .form-group.col-md-6
                 label.form-label Selecione Período
-                v-date-picker(mode="range", v-model="reportRange", @input="onChangeRange")
+                v-date-picker(mode="range", v-model="reportRange", @input="updateReports")
                     input.form-control(
                         slot-scope="props"
                         :value="props.inputValue"
@@ -40,7 +40,10 @@
                                     th.border-top-0 Total
                             tbody
                                 tr.cursor-pointer(v-for="user of users", :key="user.id", @click="showOrders(user.orders)")
-                                    td {{ user.name }}
+                                    td 
+                                        span {{ user.name }}
+                                        span.text-success.ml-2(v-if="arePaid(user.orders)")
+                                            i.fa.fa-check
                                     td {{ user.orders.length }}
                                     td R$ {{ user.total_amount.toFixed(2) }}
                                 tr.text-uppercase.font-weight-bold.text-success
@@ -48,7 +51,8 @@
                                     td {{ totalOrdersUsersReport }}
                                     td R$ {{ totalUsers.toFixed(2) }}
 
-        orders-list-modal(ref="ordersListModal", v-if="orders", :orders="orders", :date-range="reportRange")
+        orders-list-modal(ref="ordersListModal", v-if="orders", :orders="orders", :date-range="reportRange"
+            @updated="updateReports")
             span(v-if="day") Pedidos do dia {{ day | date('DD/MM/YYYY') }}
 </template>
 
@@ -117,7 +121,7 @@ export default {
             this.users = users.data;
         },
 
-        onChangeRange() {
+        updateReports() {
             this.fetchReports();
             this.fetchUserReports();
         },
@@ -132,6 +136,10 @@ export default {
             this.orders = report.orders;
             this.day = date;
             this.$refs.ordersListModal.open();
+        },
+
+        arePaid(orders) {
+            return !orders.some(order => order.paid_at === null);
         },
     },
 };

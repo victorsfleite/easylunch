@@ -58,6 +58,11 @@ class User extends Authenticatable implements HasMedia
         return $this->orders()->completed();
     }
 
+    public function pendingOrders(): HasMany
+    {
+        return $this->orders()->pending();
+    }
+
     public function createdOrder(Order $order): bool
     {
         return $order->owner_id === $this->id;
@@ -111,6 +116,13 @@ class User extends Authenticatable implements HasMedia
     public function scopeWhereHasOrdersBetweenDates(Builder $builder, array $range): Builder
     {
         return $this->whereHas('ordersCompleted', function ($order) use ($range) {
+            $order->betweenDates($range);
+        });
+    }
+
+    public function scopeWithPendingOrdersBetween(Builder $builder, array $range): Builder
+    {
+        return $this->whereHas('pendingOrders', function ($order) use ($range) {
             $order->betweenDates($range);
         });
     }

@@ -30,7 +30,12 @@
                                 td R$ {{ total.toFixed(2) }}
             .col-12.col-md-6
                 div(v-if="!$user.is_chef")
-                    h3.mb-3 Relatório por Usuários
+                    h3.mb-3
+                        span Relatório por Usuários
+                        button-loading.btn.btn-primary.btn-sm.float-right(
+                            v-if="$user.is_admin",
+                            :loading="service.sending_invoices"
+                            @click="sendInvoices") Enviar Cobrança
                     .card
                         table.table.table-hover.mb-0
                             thead
@@ -40,7 +45,7 @@
                                     th.border-top-0 Total
                             tbody
                                 tr.cursor-pointer(v-for="user of users", :key="user.id", @click="showOrders(user.orders)")
-                                    td 
+                                    td
                                         span {{ user.name }}
                                         span.text-success.ml-2(v-if="arePaid(user.orders)")
                                             i.fa.fa-check
@@ -59,6 +64,7 @@
 <script>
 import moment from 'moment';
 import OrdersListModal from '@/components/orders/list-modal';
+import OrderService from '@/services/orders';
 
 export default {
     components: { OrdersListModal },
@@ -68,6 +74,7 @@ export default {
             reports: null,
             users: null,
             orders: [],
+            service: new OrderService(),
             reportRange: {
                 start: moment()
                     .startOf('isoWeek')
@@ -84,6 +91,7 @@ export default {
     created() {
         this.fetchReports();
         this.fetchUserReports();
+        console.log('order service', this.service);
     },
 
     computed: {
@@ -140,6 +148,15 @@ export default {
 
         arePaid(orders) {
             return !orders.some(order => order.paid_at === null);
+        },
+
+        async sendInvoices() {
+            try {
+                await this.service.sendInvoices(this.reportRange);
+                this.$toasted.show('Cobrança enviada com sucesso.');
+            } catch (error) {
+                this.$toasted.error('Oops! Parece que ocorreu um erro na sua solicitação de cobrança.');
+            }
         },
     },
 };

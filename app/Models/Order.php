@@ -56,6 +56,18 @@ class Order extends Model
         return $query->whereNotNull('completed_at');
     }
 
+    public function scopePending(Builder $query)
+    {
+        return $query->whereNull('paid_at');
+    }
+
+    public function scopeOfUser(Builder $builder, $user)
+    {
+        $userId = is_object($user) ? $user->id : $user;
+
+        return $builder->whereOwnerId($userId);
+    }
+
     public function scopeBetweenDates(Builder $query, $dates): Builder
     {
         return $query->whereHas('menu', function ($menu) use ($dates) {

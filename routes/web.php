@@ -56,5 +56,6 @@ Route::middleware('auth')->group(function () {
         // Orders Operations
         Route::put('orders/mark-paid-many', 'Orders\MarkPaidManyController')->name('orders.mark-paid-many') ;
         Route::put('orders/{order}/mark-paid', 'Orders\MarkPaidController')->name('orders.mark-paid');
+        Route::post('orders/send-invoice', 'Orders\SendInvoicesController')->name('orders.send-invoices');
     });
 });

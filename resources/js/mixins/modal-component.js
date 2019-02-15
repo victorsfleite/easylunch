@@ -1,7 +1,7 @@
 export default {
     mounted() {
         const events = ['hidden', 'hide', 'show', 'shown'];
-        for (event of events) {
+        for (let event of events) {
             this.$refs.modal.$on(event, this.emit.bind(this));
         }
     },

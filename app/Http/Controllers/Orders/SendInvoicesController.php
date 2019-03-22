@@ -9,10 +9,15 @@ use App\Notifications\InvoicePending;
 
 class SendInvoicesController extends Controller
 {
-    public function __invoke(SendInvoicesRequest $request)
+    public function sendAll(SendInvoicesRequest $request)
     {
         User::withPendingOrdersBetween($request->validated())->each(function (User $user) use ($request) {
             $user->notify(new InvoicePending($user, $request->validated()));
         });
+    }
+
+    public function sendToUser(SendInvoicesRequest $request, User $user)
+    {
+        $user->notify(new InvoicePending($user, $request->validated()));
     }
 }

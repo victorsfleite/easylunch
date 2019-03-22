@@ -14,7 +14,7 @@ Não esqueça de pagar seus almoços para a conta bancária do Admin. Segue abai
 
 Essas são as opções de bancos para transferência do valor:
 
-## Nu Bank
+## NuBank
 
 Banco **260 - Nu Pagamentos S.A.**<br>
 Agência **0001**<br>

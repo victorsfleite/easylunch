@@ -39,22 +39,31 @@
                     .card
                         table.table.table-hover.mb-0
                             thead
-                                tr
+                                tr.text-center
                                     th.border-top-0 Usuário
                                     th.border-top-0 Nº de Pedidos
                                     th.border-top-0 Total
+                                    th.border-top-0(v-if="$user.is_admin")
                             tbody
-                                tr.cursor-pointer(v-for="user of users", :key="user.id", @click="showOrders(user.orders)")
+                                tr.text-center(v-for="user of users", :key="user.id", @click="showOrders(user.orders)")
                                     td
                                         span {{ user.name }}
                                         span.text-success.ml-2(v-if="arePaid(user.orders)")
                                             i.fa.fa-check
                                     td {{ user.orders.length }}
                                     td R$ {{ user.total_amount.toFixed(2) }}
+                                    td(v-if="$user.is_admin")
+                                        button-loading.btn.btn-outline-primary.btn-sm(
+                                            :loading="service.sending_invoice_to_user === user.id"
+                                            v-tooltip.hover="{title: 'Enviar Cobrança'}"
+                                            @click="sendInvoiceToUser(user)"
+                                        )
+                                            i.fas(:class="{'fa-paper-plane': service.sending_invoice_to_user !== user.id}")
                                 tr.text-uppercase.font-weight-bold.text-success
                                     td.text-right TOTAL :
-                                    td {{ totalOrdersUsersReport }}
-                                    td R$ {{ totalUsers.toFixed(2) }}
+                                    td.text-center {{ totalOrdersUsersReport }}
+                                    td.text-center R$ {{ totalUsers.toFixed(2) }}
+                                    td(v-if="$user.is_admin")
 
         orders-list-modal(ref="ordersListModal", v-if="orders", :orders="orders", :date-range="reportRange"
             @updated="updateReports")
@@ -91,7 +100,6 @@ export default {
     created() {
         this.fetchReports();
         this.fetchUserReports();
-        console.log('order service', this.service);
     },
 
     computed: {
@@ -153,7 +161,16 @@ export default {
         async sendInvoices() {
             try {
                 await this.service.sendInvoices(this.reportRange);
-                this.$toasted.show('Cobrança enviada com sucesso.');
+                this.$toasted.success('Cobrança enviada com sucesso.');
+            } catch (error) {
+                this.$toasted.error('Oops! Parece que ocorreu um erro na sua solicitação de cobrança.');
+            }
+        },
+
+        async sendInvoiceToUser(user) {
+            try {
+                await this.service.sendInvoiceToUser(this.reportRange, user);
+                this.$toasted.success('Cobrança enviada com sucesso.');
             } catch (error) {
                 this.$toasted.error('Oops! Parece que ocorreu um erro na sua solicitação de cobrança.');
             }

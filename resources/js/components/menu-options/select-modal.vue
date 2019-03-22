@@ -59,7 +59,6 @@ export default {
     },
 
     data() {
-        console.log('initial data', this.initialOptions);
         return {
             search: null,
             selectedOptions: [],

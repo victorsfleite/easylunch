@@ -35,7 +35,7 @@
                             <small class="mb-0 subtitle text-black-50 text-uppercase" v-if="$user.is_chef || $user.is_admin">(Total: R$ {{ innerMenu.income_preview.toFixed(2) }})</small>
                         </h4>
 
-                        <button type="button" @click="addNewOrder" class="btn btn-primary ml-auto" v-if="allowedToAddOrder">
+                        <button type="button" @click="addNewOrder" class="btn btn-primary ml-auto" v-if="allowedToAddOrder && !showOrderForm">
                             <i class="fa fa-check-circle mr-2"></i>
                             Adicionar Pedido
                         </button>

@@ -20,7 +20,7 @@
         transform: scale(1)
         opacity: 1
         transition: all .2s ease
-/deep/ .modal-header
+>>> .modal-header
     padding-bottom: 0
 </style>
 

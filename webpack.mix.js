@@ -24,6 +24,22 @@ mix.js('resources/js/app.js', 'public/js')
                 '~': path.resolve(__dirname, 'node_modules'),
             },
         },
+        module: {
+            rules: [
+                {
+                    test: /\.pug$/,
+                    oneOf: [
+                        {
+                            resourceQuery: /^\?vue/,
+                            use: ['pug-plain-loader'],
+                        },
+                        {
+                            use: ['raw-loader', 'pug-plain-loader'],
+                        },
+                    ],
+                },
+            ],
+        },
     });
 
 if (mix.inProduction()) {

@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import Laroute from './laroute';
 import axios from 'axios';
 import Toasted from 'vue-toasted';
 import moment from 'moment-timezone';
@@ -11,7 +10,8 @@ import VueAvatar from 'vue-avatar';
 import vBTooltip from 'bootstrap-vue/es/directives/tooltip/tooltip';
 
 // DevSquad
-import DevsquadUi, { Form } from '@elitedevsquad/ui';
+import DevsquadUi from '@elitedevsquad/ui';
+import Form from '@/plugins/form';
 
 Vue.directive('tooltip', vBTooltip);
 Vue.use(DevsquadUi);
@@ -20,7 +20,7 @@ window.moment = moment;
 window.Form = Form;
 
 Vue.prototype.$user = Globals.user;
-Vue.prototype.$route = Laroute.route;
+Vue.prototype.$route = route;
 Vue.prototype.$axios = axios;
 Vue.prototype.$obj_get = (obj, str) => {
     return str.split('.').reduce((a, c) => (a ? a[c] : null), obj);

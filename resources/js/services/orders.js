@@ -1,5 +1,4 @@
 import axios from 'axios';
-import laroute from '@/plugins/laroute';
 
 export default class {
     constructor() {
@@ -10,7 +9,7 @@ export default class {
     async sendInvoices(range) {
         try {
             this.sending_invoices = true;
-            return await axios.post(laroute.route('orders.send-invoices'), range);
+            return await axios.post(route('orders.send-invoices'), range);
         } finally {
             this.sending_invoices = false;
         }
@@ -19,7 +18,7 @@ export default class {
     async sendInvoiceToUser(range, user) {
         try {
             this.sending_invoice_to_user = user.id;
-            return await axios.post(laroute.route('orders.send-invoice-to-user', { user: user.id }), range);
+            return await axios.post(route('orders.send-invoice-to-user', { user: user.id }), range);
         } finally {
             this.sending_invoice_to_user = null;
         }

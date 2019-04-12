@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::get('users/index', 'UserController@list')->name('users');
         Route::post('users/bulk-destroy', 'UserController@bulkDestroy')->name('users.bulk-destroy');
         Route::get('users/{user}/impersonate', 'Users\ImpersonationController@impersonate')->name('users.impersonate');
+        Route::get('users/all', 'Users\GetAllUsersController')->name('users.all');
         Route::resource('users', 'UserController');
 
         // Orders Operations

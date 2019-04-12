@@ -57,7 +57,7 @@ export default {
 
             if (!this.search) return options;
 
-            return options.filter(option => option[this.label].includes(this.search));
+            return options.filter(option => option[this.label].toLowerCase().includes(this.search));
         },
 
         selectedLabel() {

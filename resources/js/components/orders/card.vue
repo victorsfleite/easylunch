@@ -52,10 +52,15 @@ export default {
 
     watch: {
         async 'order.owner.id'(value) {
+            await this.updateOwner(value);
+        },
+    },
+
+    methods: {
+        async updateOwner(userId) {
             try {
-                const { data } = await this.$axios.put(this.$route('orders.update-owner', { order: this.order.id }), { user_id: value });
+                const { data } = await this.$axios.put(this.$route('orders.update-owner', { order: this.order.id }), { user_id: userId });
                 this.$emit('ownerUpdated', data);
-                this.$toasted.success('Dono do pedido atualizado com sucesso.');
             } catch (error) {
                 this.$toasted.error('Ops! Não foi possível atualizar o dono do pedido.');
             }

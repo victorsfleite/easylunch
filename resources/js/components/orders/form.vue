@@ -17,6 +17,7 @@
                                 b  R$ {{ option.price.toFixed(2) }}
 
         .d-flex.align-items-center.mt-3
+            select-dropdown.mr-2(v-if="$user.is_admin", :options="users", v-model="selectedUser", placeholder="Selecionar Usuário", search-placeholder="Pesquisar...", searchable)
             button.btn.btn-default.ml-auto.mr-2(@click="$emit('canceled')") Cancelar
             button-loading.btn.btn-primary(@click='update', v-if='form.id', :loading='form.submitting')
                 | Atualizar
@@ -39,20 +40,31 @@ export default {
         return {
             form: new Form(this.resource || {}, 'multipart'),
             availableOptions: [],
+            users: [],
+            selectedUser: null,
         };
     },
 
-    mounted() {
+    async mounted() {
         this.availableOptions = this.options.map(option => {
             this.$set(option, 'pivot', { price: option.price });
             return option;
         });
         this.selectedObjects = this.form.options || [];
+
+        if (this.$user.is_admin) {
+            const { data } = await this.$axios.get(this.$route('users.all'));
+            this.users = data;
+        }
     },
 
     watch: {
         selectedObjects() {
             this.form.options = this.selectedObjects;
+        },
+
+        selectedUser() {
+            this.form.selected_user = this.selectedUser.id;
         },
     },
 

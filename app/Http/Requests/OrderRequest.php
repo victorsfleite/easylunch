@@ -17,6 +17,7 @@ class OrderRequest extends FormRequest
             'description'           => 'required',
             'options'               => 'sometimes|nullable|array',
             'options.*.pivot.price' => 'sometimes|numeric|min:0',
+            'selected_user'         => 'sometimes|numeric|min:1',
         ];
     }
 }

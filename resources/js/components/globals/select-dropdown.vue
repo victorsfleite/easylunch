@@ -24,7 +24,7 @@
 export default {
     props: {
         placeholder: { default: 'Choose an option' },
-        searchable: { default: false },
+        searchable: { type: Boolean, default: false },
         searchPlaceholder: { default: 'Search...' },
         value: { required: false },
         options: { default: () => [], type: Array },
@@ -57,7 +57,7 @@ export default {
 
             if (!this.search) return options;
 
-            return options.filter(option => option[this.label].includes(this.search));
+            return options.filter(option => option[this.label].toLowerCase().includes(this.search));
         },
 
         selectedLabel() {

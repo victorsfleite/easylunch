@@ -51,11 +51,13 @@ Route::middleware('auth')->group(function () {
         Route::get('users/index', 'UserController@list')->name('users');
         Route::post('users/bulk-destroy', 'UserController@bulkDestroy')->name('users.bulk-destroy');
         Route::get('users/{user}/impersonate', 'Users\ImpersonationController@impersonate')->name('users.impersonate');
+        Route::get('users/all', 'Users\GetAllUsersController')->name('users.all');
         Route::resource('users', 'UserController');
 
         // Orders Operations
         Route::put('orders/mark-paid-many', 'Orders\MarkPaidManyController')->name('orders.mark-paid-many') ;
         Route::put('orders/{order}/mark-paid', 'Orders\MarkPaidController')->name('orders.mark-paid');
+        Route::put('orders/{order}/update-owner', 'Orders\UpdateOwnerController')->name('orders.update-owner');
         Route::post('orders/send-invoice', 'Orders\SendInvoicesController@sendAll')->name('orders.send-invoices');
         Route::post('orders/send-invoice/user/{user}', 'Orders\SendInvoicesController@sendToUser')->name('orders.send-invoice-to-user');
     });

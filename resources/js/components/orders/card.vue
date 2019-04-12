@@ -1,7 +1,17 @@
 <template>
     <div class="card border-0 shadow-sm mb-3">
         <div class="card-body px-3 pt-3 pb-0">
-            <b>{{ order.owner && order.owner.name }}:</b>
+            <div class="d-inline">
+                <select-dropdown v-if="$user.is_admin && users.length"
+                    v-model="order.owner"
+                    :options="users"
+                    placeholder="Selecionar Usuário"
+                    search-placeholder="Pesquisar..."
+                    searchable>
+                </select-dropdown>
+                <b v-else>{{ order.owner && order.owner.name }}</b>
+            </div>:
+
             <span>{{ order.description }}</span>
             <div class="d-flex flex-wrap">
                 <span class="badge badge-secondary mr-2" v-for="option of order.options" :key="option.id">
@@ -37,6 +47,24 @@ export default {
     props: {
         order: { required: true, type: Object },
         showTimestamps: { default: false },
+        users: { type: Array, default: () => [] },
+    },
+
+    watch: {
+        async 'order.owner.id'(value) {
+            await this.updateOwner(value);
+        },
+    },
+
+    methods: {
+        async updateOwner(userId) {
+            try {
+                const { data } = await this.$axios.put(this.$route('orders.update-owner', { order: this.order.id }), { user_id: userId });
+                this.$emit('ownerUpdated', data);
+            } catch (error) {
+                this.$toasted.error('Ops! Não foi possível atualizar o dono do pedido.');
+            }
+        },
     },
 };
 </script>

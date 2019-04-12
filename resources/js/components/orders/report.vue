@@ -30,7 +30,7 @@
                                 td R$ {{ total.toFixed(2) }}
             .col-12.col-md-6
                 div(v-if="!$user.is_chef")
-                    h3.mb-3
+                    h3.mb-3.clearfix
                         span Relatório por Usuários
                         button-loading.btn.btn-primary.btn-sm.float-right(
                             v-if="$user.is_admin",

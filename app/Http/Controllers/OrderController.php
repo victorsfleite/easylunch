@@ -7,6 +7,7 @@ use App\Http\Requests\OrderRequest;
 use App\Http\Resources\DataResource;
 use App\Models\Menu;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -42,8 +43,13 @@ class OrderController extends Controller
 
     public function store(OrderRequest $request, Menu $menu)
     {
-        return DB::transaction(function () use ($request, $menu) {
-            $order = user()->orders()->create(array_merge($request->validated(), [
+        $user = user();
+        if ($id = $request->selected_user) {
+            $user = User::findOrFail($id);
+        }
+
+        return DB::transaction(function () use ($request, $menu, $user) {
+            $order = $user->orders()->create(array_merge($request->validated(), [
                 'menu_id' => $menu->id,
             ]));
 

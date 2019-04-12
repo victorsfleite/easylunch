@@ -19,7 +19,7 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
-    @routes()
+    @routes
 
     <script>
         window.Globals = <?php echo json_encode(\App\Globals::variables()); ?>;

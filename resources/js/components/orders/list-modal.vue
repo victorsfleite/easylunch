@@ -3,7 +3,7 @@
         <div class="d-flex align-items-center" slot="title">
             <slot>
                 Pedidos entre {{ dateRange.start | date('DD/MM/YYYY') }} e {{ dateRange.end | date('DD/MM/YYYY') }}
-                <button-loading
+                <button-loading v-if="$user.is_admin"
                     class="btn btn-sm btn-primary ml-auto"
                     @click="markAllAsPaid"
                     :loading="manyForm.submitting"

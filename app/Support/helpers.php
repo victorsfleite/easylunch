@@ -9,7 +9,7 @@ function user(): ? User
 
 function impersonator(): ? User
 {
-    $userId = session()->pull('admin:impersonator');
+    $userId = session()->get('admin:impersonator');
 
     if (!$userId) {
         return null;

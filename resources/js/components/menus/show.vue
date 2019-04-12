@@ -117,7 +117,7 @@ export default {
         },
 
         allowedToAddOrder() {
-            return this.$user.is_admin || (!this.$user.is_chef && this.isMenuOfToday && this.timeIsAllowed);
+            return this.$user.is_admin || this.$user.is_impersonated || (!this.$user.is_chef && this.isMenuOfToday && this.timeIsAllowed);
         },
 
         isMenuOfToday() {

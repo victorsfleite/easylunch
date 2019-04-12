@@ -39,7 +39,7 @@ class User extends Authenticatable implements HasMedia
         'email',
     ];
 
-    protected $appends = ['is_admin', 'is_chef', 'photo_url'];
+    protected $appends = ['is_admin', 'is_chef', 'photo_url', 'is_impersonating', 'is_impersonated'];
 
     public function setPasswordAttribute($password)
     {
@@ -106,6 +106,16 @@ class User extends Authenticatable implements HasMedia
     public function getIsAdminAttribute()
     {
         return $this->role == self::ROLE_ADMIN;
+    }
+
+    public function getIsImpersonatingAttribute()
+    {
+        return optional(impersonator())->id === $this->id;
+    }
+
+    public function getIsImpersonatedAttribute()
+    {
+        return !!impersonator();
     }
 
     public function totalAmountInRange(array $range)

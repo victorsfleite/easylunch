@@ -24,7 +24,7 @@
 export default {
     props: {
         placeholder: { default: 'Choose an option' },
-        searchable: { default: false },
+        searchable: { type: Boolean, default: false },
         searchPlaceholder: { default: 'Search...' },
         value: { required: false },
         options: { default: () => [], type: Array },

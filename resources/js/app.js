@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -21,18 +20,21 @@ window.Vue = require('vue');
 const app = new Vue({
     el: '#app',
     created() {
-        this.$axios.interceptors.response.use(response => response, error => {
-            if (error.response && error.response.status === 403) {
-                if (error.response.status === 403) {
-                    this.$toasted.error('Você não tem permissão para executar esta operação');
+        this.$axios.interceptors.response.use(
+            response => response,
+            error => {
+                if (error.response && error.response.status === 403) {
+                    if (error.response.status === 403) {
+                        this.$toasted.error('Você não tem permissão para executar esta operação');
+                    }
+                    if (error.response.status === 400) {
+                        this.$toasted.error('Você não pode executar esta operação');
+                    }
                 }
-                if (error.response.status === 400) {
-                    this.$toasted.error('Você não pode executar esta operação');
-                }
-            }
 
-            return Promise.reject(error);
-        })
+                return Promise.reject(error);
+            }
+        );
     },
     mounted() {
         this.loadTooltips();
@@ -42,7 +44,7 @@ const app = new Vue({
     },
     methods: {
         loadTooltips() {
-            $('[data-tooltip]').tooltip()
-        }
-    }
+            $('[data-tooltip]').tooltip();
+        },
+    },
 });

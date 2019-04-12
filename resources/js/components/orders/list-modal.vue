@@ -14,7 +14,7 @@
             </slot>
         </div>
 
-        <order-card v-for="order of orders" :key="order.id" :order="order" :show-timestamps="true">
+        <order-card v-for="order of ordersList" :key="order.id" :order="order" :show-timestamps="true" :users="users" @ownerUpdated="updateList">
             <div slot="actions" class="float-right" v-if="$user.is_admin">
                 <button-loading
                     class="btn btn-sm"
@@ -54,7 +54,22 @@ export default {
                 ids: [],
                 paid: false,
             }),
+            ordersList: [],
+            users: [],
         };
+    },
+
+    async mounted() {
+        if (this.$user.is_admin) {
+            const { data } = await this.$axios.get(this.$route('users.all'));
+            this.users = data;
+        }
+    },
+
+    watch: {
+        orders() {
+            this.ordersList = this.orders;
+        },
     },
 
     methods: {
@@ -74,12 +89,12 @@ export default {
         },
 
         async markAllAsPaid() {
-            this.manyForm.ids = this.orders.map(order => order.id);
+            this.manyForm.ids = this.ordersList.map(order => order.id);
             this.manyForm.paid = true;
 
             const response = await this.manyForm.put(this.$route('orders.mark-paid-many'));
             this.$emit('updated');
-            this.orders.forEach(order => (order.paid_at = moment().format('YYYY-MM-DD HH:mm:ss')));
+            this.ordersList.forEach(order => (order.paid_at = moment().format('YYYY-MM-DD HH:mm:ss')));
         },
 
         isMarking(order) {
@@ -113,6 +128,11 @@ export default {
 
         unhover(order) {
             this.hoveringOrders = this.hoveringOrders.filter(id => id !== order.id);
+        },
+
+        updateList(order) {
+            this.$emit('updated');
+            this.ordersList = this.ordersList.filter(o => o.id !== order.id);
         },
     },
 };
